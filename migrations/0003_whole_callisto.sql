@@ -1,0 +1,3 @@
+-- ALTER TABLE "files" RENAME COLUMN "icons_id" TO "icon_id";--> statement-breakpoint
+-- ALTER TABLE "folders" RENAME COLUMN "icons_id" TO "icon_id";--> statement-breakpoint
+-- ALTER TABLE "workspaces" RENAME COLUMN "icons_id" TO "icon_id";

@@ -1,0 +1,1 @@
+ALTER TABLE "collaborators" ADD COLUMN "avatar_url" text;
