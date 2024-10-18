@@ -109,7 +109,7 @@ const DropDown: React.FC<DropDownProps> = ({
   
       //the reason we dont pass { iconId } in the second parameter is as we are using the var and updating the db with 
       //it immediately after the dispatch, as dispatch is asynchronus we cant use the updated state immediately after as its not updated yet, can be checked by loggin iconId value
-      const { data, error } = await updateFile( fId[0], fId[1], { iconId: emoji } ) 
+      const { data, error } = await updateFile( fId[0], { iconId: emoji } ) 
   
       if(error){
         toast({
@@ -166,7 +166,7 @@ const DropDown: React.FC<DropDownProps> = ({
 
     if(listType === 'file'){
     
-      const { data, error } = await updateFile(fId[0], fId[1], { title })
+      const { data, error } = await updateFile(fId[0], { title })
       
       if(data){
         toast({
@@ -238,7 +238,9 @@ const DropDown: React.FC<DropDownProps> = ({
     setIsClient(true) //the emoji library using the window obj which is unavailable in the client thus causing hydration error, with this the error is resolved
   }, [])
 
-  const addFile = async () => {
+  const addFile = async (e: any) => {
+
+    e.stopPropagation()
 
     const newFile: file = {
       id: v4(),
@@ -279,7 +281,7 @@ const DropDown: React.FC<DropDownProps> = ({
 
   }
 
-  const moveToTrash = async () => {
+  const moveToTrash = async (e: any) => {
 
     if(!user || !user.email) return
 
@@ -288,15 +290,16 @@ const DropDown: React.FC<DropDownProps> = ({
     if(listType == 'folder'){
 
       dispatch({
-        type: 'UPDATE_FOLDER',
+        type: 'MOVETOTRASH',
         payload: {
           workspaceId: myWorkspaceId,
-          folderId: fId[0],
-          folder: { inTrash: `Deleted by ${user.email}` }
+          folderId: fId[0],        
+          username: user.email
         }
       })
 
       const { data, error } = await updateFolder(fId[0], { inTrash: `Deletd by ${user.email}` })
+      const { data: fileData, error: fileError } = await updateFile(fId[0], { inTrash: `Deletd by ${user.email}`})
 
       if(data){
         toast({
@@ -326,7 +329,7 @@ const DropDown: React.FC<DropDownProps> = ({
         }
       })
 
-      const { data, error } = await updateFile(fId[0], fId[1], { inTrash: `Deletd by ${user.email}` })
+      const { data, error } = await updateFile(fId[0], { inTrash: `Deletd by ${user.email}` })
 
       if(data){
         toast({
@@ -444,7 +447,9 @@ const DropDown: React.FC<DropDownProps> = ({
 
         </AccordionTrigger>
 
-        <AccordionContent>
+        <AccordionContent
+        className=''
+        >
 
           {
             state.workspaces.find((workspace) =>

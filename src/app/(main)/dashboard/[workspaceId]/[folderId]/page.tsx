@@ -1,8 +1,19 @@
+import QuilEditor from '@/components/quil-editor/QuilEditor'
 import React from 'react'
 
-const page = () => {
+type pageProps = {
+  params: { folderId: string }
+}
+
+const page: React.FC<pageProps> = ({ params }) => {
+
   return (
-    <div>Folder Page</div>
+    <div>
+      <QuilEditor 
+      fileId = {params.folderId}
+      dirType='folder'
+      />
+    </div>
   )
 }
 

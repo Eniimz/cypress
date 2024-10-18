@@ -45,7 +45,7 @@ export async function actionSignUpUser({
     })
 
 
-    
+    console.log("The data that is received from supabase: ", data)
     console.log("The response from the server actions is: ", response)
 
     return response;

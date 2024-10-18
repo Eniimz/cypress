@@ -20,6 +20,7 @@ const CustomDialogTrigger: React.FC<CustomDialogTriggerProps> = ({
         <DialogTrigger className='w-full'> {children} </DialogTrigger>
         <DialogContent
         className='
+        h-screen
         sm:h-[440px]
         '
         >

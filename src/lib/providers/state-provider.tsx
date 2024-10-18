@@ -2,7 +2,7 @@
 
 import { act, Children, createContext, Dispatch, useContext, useEffect, useMemo, useReducer } from "react"
 import { file, folder, user, workspace } from "../supabase/supabase.types"
-import { workspaces } from "../supabase/schema"
+import { folders, workspaces } from "../supabase/schema"
 import { usePathname } from "next/navigation"
 import { getFiles } from "../supabase/queries"
 import { useSupabaseContext } from "./supabaseUserProvider"
@@ -34,7 +34,7 @@ type Action =
     type: 'DELETE_WORKSPACE',
     payload: {
         workspaceId: string,
-        workspace: appWorkspacesType
+        
     }
 }
 
@@ -87,6 +87,23 @@ type Action =
     type: 'SET_CURRENT_USER',
     payload: {
         user: Partial<user>
+    }
+}
+
+| {
+    type: 'MOVETOTRASH',
+    payload: {
+        folderId: string,
+        workspaceId: string
+        username: string
+    }
+}
+
+| {
+    type: 'RESTORE',
+    payload: {
+        folderId: string,
+        workspaceId: string
     }
 }
 
@@ -276,6 +293,66 @@ const appReducer = (state: AppState, action: Action): AppState => {
                         ...action.payload.user
                     }
                 }   
+
+            case 'MOVETOTRASH':
+                return {
+                    ...state,
+                    workspaces: state.workspaces.map(workspace => {
+                        
+                        if(workspace.id === action.payload.workspaceId){
+                            return {
+                                ...workspace,
+                                folders: workspace.folders.map(folder => {
+                                    if(folder.id === action.payload.folderId){
+                                        return{
+                                            ...folder,
+                                            inTrash: `Deleted by ${action.payload.username}`,
+                                            files: folder.files.map(file => {
+                                                return{
+                                                    ...file,
+                                                    inTrash: `Deleted by ${action.payload.username}`
+                                                }
+                                            }) || []
+                                        }
+                                    }
+                                    return folder
+                                })
+                            }
+                        }
+
+                        return workspace
+
+                    })
+                        
+                }
+
+            case 'RESTORE': 
+                return {
+                    ...state,
+                    workspaces: state.workspaces.map(workspace => {
+                        if(workspace.id === action.payload.workspaceId){
+                            return {
+                                ...workspace,
+                                folders: workspace.folders.map(folder => {
+                                    if(folder.id === action.payload.folderId){
+                                        return {
+                                            ...folder,
+                                            inTrash: '',
+                                            files: folder.files.map(file => {
+                                                return {
+                                                    ...file,
+                                                    inTrash: ''
+                                                }
+                                            }) || []
+                                        }
+                                    }
+                                    return folder
+                                })
+                            } 
+                        }
+                        return workspace
+                    })
+                }
             
         
 

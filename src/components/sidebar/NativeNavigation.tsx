@@ -1,9 +1,15 @@
+
 import React from 'react'
 import CypressHomeIcon from '../icons/cypressHomeIcon'
 import CypressSettingsIcon from '../icons/cypressSettingsIcon'
 import CypressTrashIcon from '../icons/cypressTrashIcon'
 import Link from 'next/link'
 import Settings from '../settings/Settings'
+import { useAppContext } from '@/lib/providers/state-provider'
+import { useSupabaseContext } from '@/lib/providers/supabaseUserProvider'
+import { updateWorkspace } from '@/lib/supabase/queries'
+import { useRouter } from 'next/navigation'
+import { toast } from '../ui/use-toast'
 
 type NativeNavigationProps = {
     myWorkspaceId: string
@@ -14,6 +20,39 @@ const NativeNavigation: React.FC<NativeNavigationProps> = ({
     myWorkspaceId
 
 }) => {
+
+    
+
+    // const moveToTrash = async () => {
+
+    //     if(!user || !workspaceId) return
+
+    //     dispatch({
+    //         type: 'UPDATE_WORKSPACE',
+    //         payload: {
+    //             workspaceId,
+    //             workspace: { inTrash: `Deleted by ${user.email}`  }
+    //         }
+    //     })
+
+    //     const { data, error } = await updateWorkspace(workspaceId, { inTrash: `Deleted by ${user.email}`  } )
+
+    //     if(error){
+    //         toast({
+    //             variant: 'destructive',
+    //             description: 'This workspace couldnt be Trashed'
+    //           })
+    //     }
+
+    //     if(data){
+    //       toast({
+    //         description: 'This workspace has been Trashed'
+    //       })
+    //     }
+        
+    //     // router.replace('/dashboard') may test sometime later
+    // }
+
   return (
     <nav className='flex flex-col gap-2'>
 
@@ -57,11 +96,15 @@ const NativeNavigation: React.FC<NativeNavigationProps> = ({
         flex 
         items-center 
         gap-2
-        group/native
-        '>
-            <CypressTrashIcon />
+        group/native 
+        cursor-pointer  
+        '>   
+            {/* inside the svg there is group-hover/native  */}
+
+            <CypressTrashIcon /> 
 
             <span 
+            // onClick={moveToTrash}
             className='text-muted-foreground'>
                 Trash
             </span>

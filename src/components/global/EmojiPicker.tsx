@@ -26,7 +26,9 @@ const onClick = (selectedEmoji: any) => getValue(selectedEmoji.emoji)
       <Popover>
           <PopoverTrigger className=''> {children} </PopoverTrigger>
 
-          <PopoverContent className='p-0 border-none'> <Picker onEmojiClick={onClick} /> </PopoverContent>
+          <PopoverContent className='p-0 border-none'> 
+            <Picker onEmojiClick={onClick} /> 
+          </PopoverContent>
           
       </Popover>
     </>

@@ -1,17 +1,21 @@
-'use client'
-
-import { useAppContext } from '@/lib/providers/state-provider'
-import React, { useContext } from 'react'
 
 
-const WorspaceIdPage = () => {
+import QuilEditor from '@/components/quil-editor/QuilEditor'
 
-  const { state, dispatch } = useAppContext()
+type WorkspaceIdPageProps = {
+  params: { workspaceId: string }
+}
+
+const WorspaceIdPage: React.FC<WorkspaceIdPageProps> = ({ params }) => {
+
   
   return (
-     <div> 
+     <div className=''> 
 
-      WorspaceIdPage
+      <QuilEditor 
+      dirType = 'workspace'
+      fileId= {params.workspaceId}
+      />
 
     </div>
   )

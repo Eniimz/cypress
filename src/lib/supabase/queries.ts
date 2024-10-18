@@ -8,7 +8,6 @@ import { workspace } from "./supabase.types";
 import { title } from "process";
 import { and, eq, ilike, notExists } from "drizzle-orm";
 import { collaborators } from "./schema";
-import { use } from "react";
 
 
 
@@ -237,6 +236,41 @@ export const removeCollaborators = async (users: user[], workspaceId: string) =>
 
 }
 
+export const getCollaborators = async (workspaceId: string) => {
+
+    try{
+
+        const data = await db.select({
+            id: collaborators.id,
+            avatarUrl: collaborators.avatarUrl,
+            email: users.email
+        }).from(collaborators)
+        .innerJoin(users, eq(collaborators.userId, users.id))
+        .where(eq(collaborators.workspaceId, workspaceId)) 
+
+        return { data, error: null }
+    }catch(error){
+        console.log('Error in Getting Collaborators')
+        return { data: null, error: 'Error in Getting Collaborators' }
+    }
+
+}
+
+export const getCollaboratorsAsUsers = async (workspaceId: string) => {
+
+    try{
+        const data = await db.select().from(collaborators)
+        .where(eq(collaborators.workspaceId, workspaceId))
+        .innerJoin(users, eq(collaborators.userId, users.id))
+    
+        return { data, error: null }
+
+    }catch(error){
+        return { data: null, error: 'Error' }
+    }
+
+
+}
 
 export const createFolder = async (folder: folder) => {
 
@@ -312,7 +346,7 @@ export const getFiles = async (workspaceId: string, folderId: string) => {
 
 export const updateFile = async (
     folderId: string, 
-    fileId: string,
+    // fileId: string,
     file: Partial<file>
 ) => {
 

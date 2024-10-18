@@ -1,8 +1,20 @@
+import QuilEditor from '@/components/quil-editor/QuilEditor'
+import { getCollaborators } from '@/lib/supabase/queries'
 import React from 'react'
 
-const FilePage = () => {
+type FilePageProps = {
+  params: { fileId: string }
+}
+
+const FilePage: React.FC<FilePageProps> = ({ params }) => {
+
   return (
-    <div>FilePage</div>
+    <div>
+      <QuilEditor 
+      dirType='file'
+      fileId= {params.fileId}
+      />
+    </div>
   )
 }
 

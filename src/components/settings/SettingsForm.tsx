@@ -35,7 +35,7 @@ import { useSupabaseContext } from '@/lib/providers/supabaseUserProvider'
 import { Avatar, AvatarImage } from '../ui/avatar'
 import { AvatarFallback } from '@radix-ui/react-avatar'
 import { useAppContext } from '@/lib/providers/state-provider'
-import { addCollaborators, getCurrentUser, getWorkspace, removeCollaborators, removeWorkspace, updateUser, updateWorkspace } from '@/lib/supabase/queries'
+import { addCollaborators, getCollaborators, getCollaboratorsAsUsers, getCurrentUser, getWorkspace, removeCollaborators, removeWorkspace, updateUser, updateWorkspace } from '@/lib/supabase/queries'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { v4 } from 'uuid'
 import { toast } from '../ui/use-toast'
@@ -250,6 +250,28 @@ const SettingsForm = () => {
 
     }, [])
 
+    useEffect(() => {
+
+        if(!workspaceId) return
+
+        const fetchAlreadyCollaborators = async () => {
+
+            const { data, error } = await getCollaboratorsAsUsers(workspaceId)
+
+            if(!data) return
+
+            const newArray: user[] = data.map(data => {
+                return data.users
+            })
+
+            setCollaborators(newArray)
+            
+        }
+
+        fetchAlreadyCollaborators()
+
+    }, [])
+
 
   return (
     <div className='flex flex-col gap-3'>
@@ -434,9 +456,9 @@ const SettingsForm = () => {
 
                                     <div key={i} className='flex justify-between p-3'>
                                         <div className='flex items-center gap-3'>
-                                            <Avatar>
+                                            <Avatar className='flex justify-center items-center'>
                                                 <AvatarImage src={collaborator.avatarUrl || ''}/>
-                                                <AvatarFallback> CN </AvatarFallback>
+                                                <AvatarFallback> {collaborator.email?.substring(0, 2)} </AvatarFallback>
                                             </Avatar>
 
                                             <p className='text-muted-foreground'> {collaborator.email} </p>

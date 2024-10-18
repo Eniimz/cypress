@@ -1,5 +1,5 @@
 import { InferSelectModel } from "drizzle-orm"
-import { customers, files, folders, prices, products, subscriptions, users, workspaces } from "../../../migrations/schema"
+import { collaborators, customers, files, folders, prices, products, subscriptions, users, workspaces } from "../../../migrations/schema"
 import { Infer } from "next/dist/compiled/superstruct"
 
 export type Json =
