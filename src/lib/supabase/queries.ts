@@ -309,6 +309,41 @@ export const updateFolder = async (folderId: string, folder: Partial<folder>) =>
 
 }
 
+export const getFolderDetails = async ( workspaceId: string, folderId: string ) => {
+
+    try{
+
+        const result = await db.select().from(folders)
+        .where(and 
+            (
+                eq(folders.workspaceId, workspaceId),
+                eq(folders.id, folderId)
+            )
+        )
+
+        return { data: result, error: null }
+
+    }catch(err){
+        return { data: null, error: 'Error in getting folder Details' }
+    }
+
+}
+
+export const removeFolder = async (folderId: string) => {
+
+    try{
+
+        const result = await db.delete(folders)
+        .where( eq(folders.id ,folderId) )
+
+        return { data: result, error: null }
+
+    }catch(err){
+        return { data: null, error: 'Error in Deleting Folder' }
+    }
+
+}
+
 export const getFolders = async (worskpaceId: string) => {
 
     try{

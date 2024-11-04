@@ -47,20 +47,38 @@ import CollaboratorSearch from '../global/CollaboratorSearch'
 import { ScrollArea } from '../ui/scroll-area'
 import db from '@/lib/supabase/db'
 import { useRouter } from 'next/navigation'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+  } from "@/components/ui/alert-dialog"
+  
   
 type SettingsFormProps = {
-    user: user | null
+    collaboratedWorkspaces: workspace[]
 }
 
 
 
-const SettingsForm = () => {
+const SettingsForm: React.FC<SettingsFormProps> = ({
+    collaboratedWorkspaces
+}) => {
     
 
     const router = useRouter()
     const { dispatch, workspaceId, state } = useAppContext();
     const { user: supabaseUser, subscription } = useSupabaseContext()
     
+    let defaultPermission: any = collaboratedWorkspaces.find((workspace) => workspace.id  === workspaceId)
+
+    defaultPermission = defaultPermission ? 'shared' : 'private' 
+
     if(!supabaseUser) return;
 
     
@@ -68,14 +86,40 @@ const SettingsForm = () => {
     
     const titleTimerRef = useRef<ReturnType<typeof setTimeout>>()
     const [pfpUploading, setPfpUploading] = useState(false)
-    const [permissions, setPermissions] = useState('private')
+    const [permissions, setPermissions] = useState(defaultPermission)
     const [collaborators, setCollaborators] = useState<user[] | []>([])
     const [workspaceDetails, setWorkspaceDetails] = useState<workspace>()
+    const [openAlertDialog, setOpenAlertDialog] = useState(false)
+
 
     const avatarStyles = clsx('', {
         'w-16 h-16': state.currentUser?.avatarUrl && !pfpUploading || false
     })
 
+
+    const onPermissionsChange = (value: string) => {
+
+        if(value === 'private'){
+            setOpenAlertDialog(true)
+        }else{
+            setPermissions(value)
+        }
+
+
+    }
+
+    const onContinue = async () => {
+
+        if (!workspaceId) return
+
+        const { data, error } =  await removeCollaborators(collaborators, workspaceId)
+        
+        if(data){
+            setPermissions('shared')
+            setOpenAlertDialog(false)
+        }
+
+    }
 
     const removeCollaborator = async (user: user) => {
 
@@ -281,7 +325,7 @@ const SettingsForm = () => {
                 <p 
                 className='text-md'
                 >
-                    Worspace
+                    Workspace
                 </p>
             </div>
         </div>
@@ -339,8 +383,8 @@ const SettingsForm = () => {
             </Label>
 
             <Select
-            defaultValue={permissions}
-            onValueChange={(value) => setPermissions(value)}
+            value={permissions}
+            onValueChange={(value) => onPermissionsChange(value)}
             >
                 <SelectTrigger className='h-24'> 
                     <SelectValue/> 
@@ -614,6 +658,22 @@ const SettingsForm = () => {
 
         </div>
         
+        <AlertDialog open = {openAlertDialog}>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                    This action cannot be undone. This will permanently remove all the collaborators
+                    that are collaborating in this workspace
+                </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                <AlertDialogCancel onClick={() => setOpenAlertDialog(false)}>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={onContinue}>Continue</AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+
 
     </div>
   )

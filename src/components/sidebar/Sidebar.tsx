@@ -79,6 +79,7 @@ const Sidebar: React.FC<SidebarProps>= async ( { params } ) => {
 
             <NativeNavigation 
             myWorkspaceId = { params.workspaceId }
+            collaboratedWorkspaces = {[ ...(collaboratedWorkspaces || []), ...(sharedWorkspaces || []) ]}
             />
 
             <ScrollArea

@@ -82,6 +82,17 @@ type Action =
         file: Partial<file>
     }
 }
+|
+
+   {
+
+    type: 'DELETE_FOLDER',
+    payload: {
+        workspaceId: string,
+        folderId: string
+    }
+
+   } 
 
 | {
     type: 'SET_CURRENT_USER',
@@ -285,6 +296,23 @@ const appReducer = (state: AppState, action: Action): AppState => {
                 })
             }
 
+            case 'DELETE_FOLDER': 
+                return {
+                    ...state,
+                    workspaces: state.workspaces.map((workspace) => {
+                        if(workspace.id == action.payload.workspaceId){
+                            return{
+                                ...workspace,
+                                folders: workspace.folders.filter((folder) => {
+                                    folder.id !== action.payload.folderId
+                                })
+                            }
+                        }
+
+                        return workspace
+                    })
+                }
+
             case 'SET_CURRENT_USER':
                 return {
                     ...state,
@@ -380,7 +408,7 @@ export const AppStateProvider: React.FC<AppStateProviderProps> = ({ children }) 
 
     const [ state, dispatch ] = useReducer(appReducer, initialState)
     const pathname = usePathname()
-
+    if(!pathname) return
     const workspaceId = useMemo(() => {
         const urlSegments = pathname.split('/').filter(Boolean)
         if(urlSegments.length > 1){ // '/dashboard/workspaceId'

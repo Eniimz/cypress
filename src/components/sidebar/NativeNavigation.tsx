@@ -10,14 +10,17 @@ import { useSupabaseContext } from '@/lib/providers/supabaseUserProvider'
 import { updateWorkspace } from '@/lib/supabase/queries'
 import { useRouter } from 'next/navigation'
 import { toast } from '../ui/use-toast'
+import { workspace } from '@/lib/supabase/supabase.types'
 
 type NativeNavigationProps = {
     myWorkspaceId: string
+    collaboratedWorkspaces: workspace[]
 }
 
 const NativeNavigation: React.FC<NativeNavigationProps> = ({
 
-    myWorkspaceId
+    myWorkspaceId,
+    collaboratedWorkspaces
 
 }) => {
 
@@ -72,7 +75,9 @@ const NativeNavigation: React.FC<NativeNavigationProps> = ({
             </span>
         </Link>
 
-        <Settings>
+        <Settings
+        collaboratedWorkspaces = { collaboratedWorkspaces }
+        >
 
             <div 
             className='

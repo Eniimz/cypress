@@ -95,11 +95,13 @@ const WorkspaceDropdown: React.FC<WorkspaceDropdownProps> = (
 
         <div className='absolute'>
             
+         {/* origin-top-right    */}
+            
         {
             isOpen && (
                         <ScrollArea 
                             className='
-                            origin-top-right
+                            
                             backdrop-blur-md
                             shadow-md
                             bg-black/10

@@ -5,7 +5,7 @@ import 'quill/dist/quill.snow.css'
 import { Button } from '../ui/button';
 import { useAppContext } from '@/lib/providers/state-provider';
 import { useSupabaseContext } from '@/lib/providers/supabaseUserProvider';
-import { getCollaborators, removeWorkspace, updateFile, updateFolder, updateWorkspace } from '@/lib/supabase/queries';
+import { getCollaborators, getFolderDetails, getWorkspace, removeFolder, removeWorkspace, updateFile, updateFolder, updateWorkspace } from '@/lib/supabase/queries';
 import { toast } from '../ui/use-toast';
 import { usePathname, useRouter } from 'next/navigation';
 import { Badge } from "@/components/ui/badge"
@@ -240,6 +240,35 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
 
      }
 
+     if(dirType === 'folder') {
+      if(!folderId) return
+
+      dispatch({
+        type: 'DELETE_FOLDER',
+        payload: {
+          workspaceId,
+          folderId
+        }
+      })
+
+      const { data, error } = await removeFolder(folderId)
+
+      if(data){
+        toast({
+          description: 'Deleted Folder'
+        })
+      }
+
+      if(error){
+        toast({
+          variant: 'destructive',
+          description: 'Couldnt Delete Folder'
+        })
+      }
+
+      router.replace(`/dashboard/${workspaceId}`)
+
+     }
 
   }
 
@@ -334,6 +363,46 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
 
   }, [state.workspaces, workspaceId, folderId, fileId, pathname])
   
+
+
+
+  useEffect(() => {
+
+    if(!quill) return
+
+    const fetchInformation = async () => {
+
+      if(!workspaceId) return
+      
+      if(dirType === 'workspace'){
+        const { data, error } = await getWorkspace(workspaceId) 
+        if(!data) return
+
+        quill.setContents(JSON.parse(data[0].data || '' ))
+
+        console.log("I the setContents ran..")
+
+      }
+
+      if(dirType === 'folder'){
+        if(!folderId) return
+        const { data, error }  = await getFolderDetails(workspaceId, folderId)
+        if(!data) return
+
+        quill.setContents(JSON.parse(data[0].data || ''))
+
+
+      }
+
+    
+
+    }
+
+    fetchInformation()
+
+  }, [quill])
+
+
   useEffect(() => {
 
     const fetchCollaborators = async () => {
@@ -621,6 +690,7 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
           </EmojiPicker>
         </div>
 
+
         <div 
         className='p-0.5 pl-4 flex items-center gap-6 '
         >
@@ -639,7 +709,7 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
               gap-1
               text-sm
               text-muted-foreground
-            
+              
               '
               onClick={removeBanner}  
               >
@@ -659,10 +729,21 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
 
         </div>
 
+        <div className='p-0.5 pl-4 flex flex-col gap-1 text-muted-foreground '>
+          
+          <p className='text-3xl font-bold'>
+            { dirDetails?.title }
+          </p>
+
+          <p className='text-sm text-muted-foreground'>
+            { dirType.toUpperCase() }
+          </p>
+
+        </div>
       </div>
 
       <div
-      className='
+      className=' 
       max-w-[800px]
       '
       ref={wrapperRef}
