@@ -6,6 +6,7 @@ import { AuthUser } from "@supabase/supabase-js";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { getUserSubscriptionStatus } from "../supabase/queries";
 import { toast } from "@/components/ui/use-toast";
+import { usePathname } from "next/navigation";
 
 type supabaseContext = {
     user: AuthUser | null,
@@ -39,7 +40,7 @@ const SupabaseUserProvider: React.FC<supabaseUserProviderProps> = ({ children })
 
     const [user, setUser] = useState<AuthUser | null>(null);
     const [subscription, setSubscription] = useState<subscription | null>()
-
+    const pathname = usePathname()
 
     useEffect(() => {
 
@@ -74,7 +75,7 @@ const SupabaseUserProvider: React.FC<supabaseUserProviderProps> = ({ children })
         }
 
         getUser()
-    }, [supabase])
+    }, [supabase, pathname])
 
     return (
 

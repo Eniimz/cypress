@@ -38,6 +38,11 @@ const ioHandler = ( req: NextApiRequest, res: NextApiResponseServerIo ) => {
                     s.on('A check', () => {
                         console.log("The check works")
                     })
+
+                    s.on('send-cursor-move', (range, fileId, cursorId) => {
+                        console.log("The cursor movedL ", cursorId)
+                        s.to(fileId).emit('receive-cursor-changes', range, cursorId)
+                    })
                 })
         
                 res.socket.server.io = io

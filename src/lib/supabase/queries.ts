@@ -10,6 +10,23 @@ import { and, eq, ilike, notExists } from "drizzle-orm";
 import { collaborators } from "./schema";
 
 
+export const findUser = async (userId: string) => {
+
+    try{
+
+        const data = await db.query.users.findFirst({
+            where : ( u, { eq }) => eq(u.id, userId)
+        })
+
+        return { data, error: null }
+
+    }catch(err){
+
+        return { data: null, error: 'Error in finding user' }
+
+    }
+
+}
 
 export const createWorkspace = async (workspace: workspace) => {
 

@@ -5,7 +5,7 @@ import 'quill/dist/quill.snow.css'
 import { Button } from '../ui/button';
 import { useAppContext } from '@/lib/providers/state-provider';
 import { useSupabaseContext } from '@/lib/providers/supabaseUserProvider';
-import { getCollaborators, getFolderDetails, getWorkspace, removeFolder, removeWorkspace, updateFile, updateFolder, updateWorkspace } from '@/lib/supabase/queries';
+import { findUser, getCollaborators, getFolderDetails, getWorkspace, removeFolder, removeWorkspace, updateFile, updateFolder, updateWorkspace } from '@/lib/supabase/queries';
 import { toast } from '../ui/use-toast';
 import { usePathname, useRouter } from 'next/navigation';
 import { Badge } from "@/components/ui/badge"
@@ -17,6 +17,8 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { XCircleIcon } from 'lucide-react';
 import { useSocket } from '@/lib/providers/socket-providor';
 import { Scope_One } from 'next/font/google';
+import { user } from '@/lib/supabase/supabase.types';
+import ToolTipComponent from '../global/ToolTipComponent';
 
 var TOOLBAR_OPTIONS = [
   ['bold', 'italic', 'underline', 'strike'], // toggled buttons
@@ -51,6 +53,8 @@ type collaborator = {
   email: string | null;
 }
 
+
+
 const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
 
   const router = useRouter()
@@ -61,11 +65,14 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
   const { user } = useSupabaseContext()
   const { socket, isConnected } = useSocket()
 
+  // console.log("The SupUser in Quill: ", user)
+
   const saverTimerRef = useRef<ReturnType <typeof setTimeout>  >()
 
   const [quill, setQuill] = useState<any>(null)
   const [saving, setSaving] = useState(false)
   const [collaborators, setCollaborators] = useState< collaborator[] | []>([])
+  const [localCursors, setLocalCursors] = useState<any>()
 
 
   const onChangeEmoji = async (selectedEmoji: any) => {
@@ -274,6 +281,7 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
 
 
   const wrapperRef = useCallback((wrapper: any) => {
+
     if (typeof window !== 'undefined') {
       if (wrapper === null) return;
       wrapper.innerHTML = '';
@@ -281,13 +289,21 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
       const editor = document.createElement('div');
       wrapper.append(editor);
 
-      import('quill').then((module) => {
+      import('quill').then(async (module) => {
+
+        const QuilCursors = (await import('quill-cursors')).default
 
         const Quill = module.default
+
+        Quill.register('modules/cursors', QuilCursors)
+
         const q = new Quill(editor, {
           theme: 'snow',
           modules: {
             toolbar: TOOLBAR_OPTIONS,
+            cursors: {
+              transformOnTextChange: true,
+            }
             
           },
         });
@@ -403,23 +419,23 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
   }, [quill])
 
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    const fetchCollaborators = async () => {
+  //   const fetchCollaborators = async () => {
 
-      if(!workspaceId) return
-      const { data, error } = await getCollaborators(workspaceId)
+  //     if(!workspaceId) return
+  //     const { data, error } = await getCollaborators(workspaceId)
 
-      if(!data) return
+  //     if(!data) return
 
-      console.log("The collaborators fetched: ", data)
-      setCollaborators(data)
+  //     console.log("The collaborators fetched: ", data)
+  //     setCollaborators(data)
       
-    }
+  //   }
 
-    fetchCollaborators()
+  //   fetchCollaborators()
 
-  }, [])
+  // }, [])
 
   useEffect(() => {
 
@@ -511,6 +527,8 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
 
   }, [quill])
 
+
+
   useEffect(() => {
 
     if(!quill || !socket) return
@@ -535,6 +553,132 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
 
   }, [quill])
 
+  useEffect(() => {
+
+    // console.log("The useEffect with joining supabase chnnel ran(collaborators): ", collaborators)
+
+    const room = supabase.channel(fileId)
+
+    const subscription = room.on('presence', { event: 'sync' }, () => {
+      
+      const newState = room.presenceState()
+      const newCollaborators = Object.values(newState).flat() as any
+      
+      // console.log("The presence State Collaborataors: ", newCollaborators)
+      setCollaborators(newCollaborators)
+
+      if(!user) return
+
+      const allCursors: any = []
+
+      newCollaborators.forEach((collaborator: collaborator) => {
+        if(collaborator.id !== user.id){ //for all users except the current User
+            const userCursor = quill.getModule('cursors');
+
+            userCursor.createCursor(
+              collaborator.id,
+              collaborator.email?.split('@')[0],
+              `#${Math.random().toString(16).slice(2, 8)}`
+            )
+
+            allCursors.push(userCursor)
+        }
+      })
+      // console.log("The new Collaborators: ", newCollaborators)
+      setLocalCursors(allCursors)
+
+
+    } )
+    .subscribe(async (status) => {
+      if(status !== 'SUBSCRIBED' || !user) return
+      
+      const response = await findUser(user.id)
+
+      if(!response) return
+  
+      // The data passed here in room.track, becomes the 
+      // the presence data that is received from room.presenceState()
+      // this func returns this presenceData for each user { user1-id: { data }, user2-id: { data } }
+      // so when a new user joins or leaves i.e when there is a change in the presence Data
+      // the event 'sync' is triggered, 
+
+      room.track({
+        id: user.id,
+        email: user.email?.split('@')[0],
+        avatarUrl: response.data?.avatarUrl ?
+                   supabase.storage.from('avatars')
+                   .getPublicUrl(response.data.avatarUrl) 
+                   .data.publicUrl :
+                   ''
+      })
+
+
+    })
+
+    return () => {
+      supabase.removeChannel(room)
+    }
+
+  }, [user, quill])
+
+
+  
+  useEffect(() => {
+    
+    if(!user || !quill || !socket) return
+    
+    // console.log("The selection change Effect ran")
+    // console.log("The user:", user)
+    // console.log("The quill: ", quill)
+    // console.log("The socket: ", socket)
+    
+    
+    const selectionChangeHandler = (cursorId: string) => {
+      
+      return (
+        range : { index: number, length: number  }, 
+        oldRange: { index: number, length: number },
+        source: string
+      ) => {
+        
+          // console.log("The selection Change running")
+          // console.log("ALLCURSORSSENDER: ", localCursors)
+          socket.emit('send-cursor-move', range, fileId, cursorId)  
+        }
+    }
+    
+    
+    quill.on('selection-change',selectionChangeHandler(user.id))
+
+  }, [socket, quill, user])
+  
+  useEffect(() => {
+
+    if(!socket) return
+
+    // console.log("The socket Handler UseEffect: ", socket)
+
+    const socketHandler = (range: { index: number, length: number  }, cursorId: String) => {
+    
+      const cursorToMove = localCursors.find((c: any) => {
+
+        return c.cursors()[0].id === cursorId
+      })
+
+      if(cursorToMove){
+        cursorToMove.moveCursor(cursorId, range)
+      }
+      
+    }
+
+    socket.on('receive-cursor-changes', socketHandler)
+
+    return () => {
+      socket.off('receive-cursor-changes', socketHandler)
+    }
+
+  }, [socket, localCursors])
+  
   return (
     <div className='flex 
     flex-col 
@@ -546,7 +690,7 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
 
       {
         dirDetails?.inTrash && (
-
+          
           <div
           className='flex 
           w-full
@@ -600,16 +744,18 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
           <div className='flex items-center'>
             {
               collaborators.map((collaborator_el, i) => (
-                <Avatar 
-                key={i}
-                className={`relative z-${collaborators.length - i} -ml-3  border-2 border-white`}>
-                  <AvatarImage>
-                      {collaborator_el.avatarUrl}
-                  </AvatarImage>
-                  <AvatarFallback>
-                    {collaborator_el.email?.substring(0, 2).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
+                <ToolTipComponent message={`${collaborator_el.email}`} key={collaborator_el.id}>
+                  <Avatar 
+                  key={i}
+                  className={`relative z-${collaborators.length - i} -ml-3  border-2 border-white`}>
+                    <AvatarImage>
+                        {collaborator_el.avatarUrl}
+                    </AvatarImage>
+                    <AvatarFallback>
+                      {collaborator_el.email?.substring(0, 2).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </ToolTipComponent>
               ) )
             }
           </div>
@@ -665,90 +811,89 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
         )
       }
 
-      <div className=' 
-      w-full 
-      flex
-      flex-col
-      items-start
-      p-2'>
+      <div className='max-w-[800px]'>
 
-        
-        <div 
-        className='text-[80px]'
-        >
-          <EmojiPicker
-            getValue={onChangeEmoji}
-          >
-            <div 
-            className='h-[110px] w-[110px]
-            rounded-xl hover:bg-muted flex 
-            justify-center items-center
-            transition-colors
-            '>
-              {dirDetails?.iconId}
-            </div>
-          </EmojiPicker>
-        </div>
+        <div className=' 
+        flex
+        flex-col
+        p-2'>
 
-
-        <div 
-        className='p-0.5 pl-4 flex items-center gap-6 '
-        >
-          <BannerUpload
-          dirType = {dirType}
-          >
-            <p className='text-muted-foreground text-sm'>
-              {dirDetails?.bannerUrl ? 'Update Banner' : 'Upload Banner'}
-            </p>
-          </BannerUpload>
-
-          {
-            dirDetails?.bannerUrl && 
-              <div
-              className='flex items-center 
-              gap-1
-              text-sm
-              text-muted-foreground
-              
-              '
-              onClick={removeBanner}  
-              >
-
-                <XCircleIcon size={14} className=''/>
-
-                <p
-                className='text-muted-foreground
-                cursor-pointer  
-                text-sm
-                whitespace-nowrap'
-                >
-                  Remove Banner
-                </p>
-              </div>
-          }
-
-        </div>
-
-        <div className='p-0.5 pl-4 flex flex-col gap-1 text-muted-foreground '>
           
-          <p className='text-3xl font-bold'>
-            { dirDetails?.title }
-          </p>
+          <div 
+          className='text-[80px]'
+          >
+            <EmojiPicker
+              getValue={onChangeEmoji}
+            >
+              <div 
+              className='h-[110px] w-[110px]
+              rounded-xl hover:bg-muted flex 
+              justify-center items-center
+              transition-colors
+              '>
+                {dirDetails?.iconId}
+              </div>
+            </EmojiPicker>
+          </div>
 
-          <p className='text-sm text-muted-foreground'>
-            { dirType.toUpperCase() }
-          </p>
 
+          <div 
+          className='p-0.5 pl-4 flex gap-6 '
+          >
+            <BannerUpload
+            dirType = {dirType}
+            >
+              <p className='flex items-start text-muted-foreground text-sm'>
+                {dirDetails?.bannerUrl ? 'Update Banner' : 'Upload Banner'}
+              </p>
+            </BannerUpload>
+
+            {
+              dirDetails?.bannerUrl && 
+                <div
+                className='flex items-center 
+                gap-1
+                text-sm
+                text-muted-foreground
+                
+                '
+                onClick={removeBanner}  
+                >
+
+                  <XCircleIcon size={14} className=''/>
+
+                  <p
+                  className='text-muted-foreground
+                  cursor-pointer  
+                  text-sm
+                  whitespace-nowrap'
+                  >
+                    Remove Banner
+                  </p>
+                </div>
+            }
+
+          </div>
+
+          <div className='p-0.5 pl-4 flex flex-col gap-1 text-muted-foreground '>
+            
+            <p className='text-3xl font-bold'>
+              { dirDetails?.title }
+            </p>
+
+            <p className='text-sm text-muted-foreground'>
+              { dirType.toUpperCase() }
+            </p>
+
+          </div>
         </div>
-      </div>
 
-      <div
-      className=' 
-      max-w-[800px]
-      '
-      ref={wrapperRef}
-      >
-        
+        <div
+        className=''
+        ref={wrapperRef}
+        >
+          
+        </div>
       </div>
     </div>
   )

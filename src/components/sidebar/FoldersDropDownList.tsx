@@ -11,6 +11,7 @@ import { folder } from '@/lib/supabase/supabase.types'
 import { files } from '@/lib/supabase/schema'
 import DropDown from './DropDown'
 import { Accordion } from '../ui/accordion'
+import useSupabaseRealtime from '@/lib/hooks/useSupabaseRealtime'
 
 type FoldersDropDownListProps = {
     myWorkspaceId: string,
@@ -25,6 +26,8 @@ const FoldersDropDownList: React.FC<FoldersDropDownListProps> = ({
     const { state, dispatch } = useAppContext()
 
     const [folders, setFolders] = useState(workspacefolders)
+
+    useSupabaseRealtime()
 
     useEffect(() => {
 
