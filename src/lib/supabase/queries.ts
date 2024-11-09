@@ -312,6 +312,25 @@ export const createFile = async (file: file) => {
 
 }
 
+export const deleteFile = async (folderId: string, fileId: string) => {
+
+    try{
+        const data = await db.delete(files)
+        .where(
+            and(
+                eq(files.folderId, folderId),
+                eq(files.id, fileId)
+            )
+        )
+
+        return { data, error: null }
+
+    }
+    catch(error){
+        return { data: null, error: 'Error in deleting File' }
+    }
+}
+
 export const updateFolder = async (folderId: string, folder: Partial<folder>) => {
 
     try{

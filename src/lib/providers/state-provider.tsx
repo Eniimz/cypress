@@ -84,6 +84,15 @@ type Action =
 }
 |
 
+    {
+        type: 'DELETE_FILE',
+        payload: {
+            workspaceId: string,
+            folderId: string,
+            fileId: string
+        }
+    }
+|
    {
 
     type: 'DELETE_FOLDER',
@@ -117,6 +126,7 @@ type Action =
         workspaceId: string
     }
 }
+
 
 const initialState: AppState = {
     workspaces: [],
@@ -233,6 +243,29 @@ const appReducer = (state: AppState, action: Action): AppState => {
                                 return folder
                             })
                         }
+                    }
+                    return workspace
+                })
+            }
+
+        case 'DELETE_FILE': 
+            return {
+                ...state,
+                workspaces: state.workspaces.map(workspace => {
+                    if(workspace.id === action.payload.workspaceId){
+                        return {
+                            ...workspace,
+                            folders: workspace.folders.map(folder => {
+                                if(folder.id === action.payload.folderId){
+                                    return {
+                                        ...folder,
+                                        files: folder.files.filter(file => file.id !== action.payload.fileId)
+                                    }
+                                }
+                                return folder
+                            })
+                        }
+
                     }
                     return workspace
                 })

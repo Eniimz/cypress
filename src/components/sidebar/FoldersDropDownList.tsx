@@ -99,7 +99,26 @@ const FoldersDropDownList: React.FC<FoldersDropDownListProps> = ({
             setFolders(state.workspaces.find
                 ((workspace) => workspace.id === myWorkspaceId)
                 ?.folders || [])
-    }, [state])
+    }, [state]) 
+
+    //we use a local state for folders here, cuz if user adds, deletes or updates a folder
+    //it will trigger a change in the contextState, 
+    //to show these changes on ui
+    //we use a local state that depends on the changes of context state
+    //so when a user adds folder
+    //this useEffect runs updates the local folders state
+    //triggers a rerender
+    //and shows the added folder on the ui
+
+    //what if we used the context state directly instead of a separate local state?
+    // then whenever a user adds a folder( or any other change)
+    // the context state is updates
+    //we now have the added folder present in the context state
+    //but to show this change on ui, we have to use states
+    //so we say on any change of state, setState(!value)
+    // to trigger a rerender
+    // so it seems, in the end we have to use a local state either way
+    // this is to show changes made by the user at the time they are made
 
   return (
 

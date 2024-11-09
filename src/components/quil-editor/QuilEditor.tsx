@@ -5,7 +5,7 @@ import 'quill/dist/quill.snow.css'
 import { Button } from '../ui/button';
 import { useAppContext } from '@/lib/providers/state-provider';
 import { useSupabaseContext } from '@/lib/providers/supabaseUserProvider';
-import { findUser, getCollaborators, getFolderDetails, getWorkspace, removeFolder, removeWorkspace, updateFile, updateFolder, updateWorkspace } from '@/lib/supabase/queries';
+import { deleteFile, findUser, getCollaborators, getFolderDetails, getWorkspace, removeFolder, removeWorkspace, updateFile, updateFolder, updateWorkspace } from '@/lib/supabase/queries';
 import { toast } from '../ui/use-toast';
 import { usePathname, useRouter } from 'next/navigation';
 import { Badge } from "@/components/ui/badge"
@@ -276,7 +276,39 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
       router.replace(`/dashboard/${workspaceId}`)
 
      }
+     
+     if(dirType === 'file'){
 
+      if(!folderId) return
+
+      dispatch({
+        type: 'DELETE_FILE',
+        payload: {
+          workspaceId,
+          fileId,
+          folderId
+        }
+      })
+
+      const { data, error } = await deleteFile(folderId, fileId)
+
+      if(data){
+        toast({
+          description: 'File Deleted Successfullt'
+        })
+        
+      }
+
+      if(error){
+        toast({
+          variant: 'destructive',
+          description: 'Failed to delete File'
+        })
+      }
+
+      router.replace(`/dashboard/${workspaceId}/${folderId}`)
+
+     }
   }
 
 

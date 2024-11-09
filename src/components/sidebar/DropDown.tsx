@@ -255,6 +255,8 @@ const DropDown: React.FC<DropDownProps> = ({
       workspaceId: myWorkspaceId
     }
     
+    console.log("ADD FILE Action dispatched")
+
     dispatch({
       type: 'ADD_FILE',
       payload: {
