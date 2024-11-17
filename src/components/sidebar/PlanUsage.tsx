@@ -8,6 +8,7 @@ import { Button } from '../ui/button'
 import { v4 } from 'uuid'
 import { createFolder } from '@/lib/supabase/queries'
 import { useAppContext } from '@/lib/providers/state-provider'
+import { useSupabaseContext } from '@/lib/providers/supabaseUserProvider'
 
 type PlanUsageProps = {
     workspaceFoldersLength: number,
@@ -21,6 +22,8 @@ const PlanUsage: React.FC<PlanUsageProps> = ({ workspaceFoldersLength, workspace
     const [usagePercentage, setUsagePercentage] = useState(defaultValue)
 
     const { state } = useAppContext();
+
+    const { subscription } = useSupabaseContext()
 
     useEffect(() => {
 
@@ -49,7 +52,7 @@ const PlanUsage: React.FC<PlanUsageProps> = ({ workspaceFoldersLength, workspace
                 text-sm 
                 text-Neutrals/neutrals-9
                 '>
-                    Free Plan
+                    { subscription?.status === 'active' ? 'Pro Plan' :  'Free Plan'}
                 </p>
 
                 </div>

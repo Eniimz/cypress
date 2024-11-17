@@ -502,3 +502,5 @@ export type price = InferSelectModel<typeof prices> & { products?: product };
 export type folder = InferSelectModel<typeof folders> 
 export type file = InferSelectModel<typeof files>
 export type customer = InferSelectModel<typeof customers>   
+
+export type ProductWithPrice = product & { prices ?: price[] }

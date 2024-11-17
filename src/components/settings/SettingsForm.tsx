@@ -29,6 +29,7 @@ import {
     AlertDescription,
     AlertTitle,
   } from "@/components/ui/alert"
+import SubscriptionModal from '../global/SubscriptionModal'
 import { Button } from '../ui/button'
 import CypressProfileIcon from '../icons/cypressProfileIcon'
 import { useSupabaseContext } from '@/lib/providers/supabaseUserProvider'
@@ -58,6 +59,9 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
   } from "@/components/ui/alert-dialog"
+import { useSubscriptionModal } from '@/lib/providers/subscription-modal-providor'
+import { postData } from '@/lib/utils'
+import { getStripe } from '@/lib/stripe/stripeClient'
   
   
 type SettingsFormProps = {
@@ -74,6 +78,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
     const router = useRouter()
     const { dispatch, workspaceId, state } = useAppContext();
     const { user: supabaseUser, subscription } = useSupabaseContext()
+    const { open, setOpen } = useSubscriptionModal()
     
     let defaultPermission: any = collaboratedWorkspaces.find((workspace) => workspace.id  === workspaceId)
 
@@ -316,6 +321,14 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
 
     }, [])
 
+    const onStartPlan = async () => {
+    
+        setOpen(true)
+
+        //make a post req to checkout-session-route
+        //why?
+        //to get a session id/url
+    }
 
   return (
     <div className='flex flex-col gap-3'>
@@ -358,9 +371,10 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
                 <Input 
                 name='workspaceLogo'
                 // defaultValue={workspaceDetails?.logo || '/cypresslogo.svg'}
-                className='p-4 pb-10 h-10 text-muted-foreground border-none cursor-pointer'
+                className='p-1 pt-2 pb-2 h-10 text-muted-foreground border-[1px] cursor-pointer'
                 type='file'
                 onChange={changeWorkspaceLogo}
+                disabled = { subscription?.status !== 'active' }
                 />
             </span>
         </div>
@@ -368,9 +382,9 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
         {
             subscription?.status !== 'active' && (
                 <span>
-                    <article className='text-sm text-muted-foreground'>
+                    <small className='text-sm text-muted-foreground'>
                         To customize your workspace, you need to be on Pro Plan
-                    </article>
+                    </small>
                 </span>
             )
         }
@@ -648,10 +662,19 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
                         <ExternalLink size={16}/>
 
                     </span>
+                    
+                    {
+                        subscription?.status !== 'active' && (
 
-                    <Button variant={'secondary'}>
-                        Start Plan
-                    </Button>
+                        <Button 
+                        onClick={onStartPlan}
+                        variant={'secondary'}>
+                            Start Plan
+                        </Button>
+                        )
+                    }
+
+
                 </div>
 
             </div>

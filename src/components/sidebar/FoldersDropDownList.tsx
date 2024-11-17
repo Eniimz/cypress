@@ -12,6 +12,8 @@ import { files } from '@/lib/supabase/schema'
 import DropDown from './DropDown'
 import { Accordion } from '../ui/accordion'
 import useSupabaseRealtime from '@/lib/hooks/useSupabaseRealtime'
+import { useSupabaseContext } from '@/lib/providers/supabaseUserProvider'
+import { useSubscriptionModal } from '@/lib/providers/subscription-modal-providor'
 
 type FoldersDropDownListProps = {
     myWorkspaceId: string,
@@ -26,6 +28,10 @@ const FoldersDropDownList: React.FC<FoldersDropDownListProps> = ({
     const { state, dispatch } = useAppContext()
 
     const [folders, setFolders] = useState(workspacefolders)
+
+    const {subscription} = useSupabaseContext()
+
+    const { open, setOpen } = useSubscriptionModal()
 
     useSupabaseRealtime()
 
@@ -63,7 +69,9 @@ const FoldersDropDownList: React.FC<FoldersDropDownListProps> = ({
     const addFolder = async () => {
 
 
-        if(folders?.length === 3) {
+        if(folders && folders?.length >= 3 && subscription?.status !== 'active') {
+            setOpen(true)
+
             return
         }
 

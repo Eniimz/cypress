@@ -426,7 +426,7 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
         const { data, error } = await getWorkspace(workspaceId) 
         if(!data) return
 
-        quill.setContents(JSON.parse(data[0].data || '' ))
+        quill.setContents(data[0] && data[0].data && JSON.parse(data[0].data))
 
         console.log("I the setContents ran..")
 
@@ -453,19 +453,9 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
 
   // useEffect(() => {
 
-  //   const fetchCollaborators = async () => {
-
-  //     if(!workspaceId) return
-  //     const { data, error } = await getCollaborators(workspaceId)
-
-  //     if(!data) return
-
-  //     console.log("The collaborators fetched: ", data)
-  //     setCollaborators(data)
-      
-  //   }
-
-  //   fetchCollaborators()
+  //   const allAvatar_Urls = collaborators.map((collab, i) => {
+  //     console.log(`Collab (${i}): `, supabase.storage.from('avatars')).getPublicUrl
+  //   })
 
   // }, [])
 
@@ -781,7 +771,10 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
                   key={i}
                   className={`relative z-${collaborators.length - i} -ml-3  border-2 border-white`}>
                     <AvatarImage>
-                        {collaborator_el.avatarUrl}
+                        {
+                          supabase.storage.from('avatars').getPublicUrl('path').data.publicUrl  ||
+                          collaborator_el.avatarUrl
+                        }
                     </AvatarImage>
                     <AvatarFallback>
                       {collaborator_el.email?.substring(0, 2).toUpperCase()}

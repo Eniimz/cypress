@@ -106,6 +106,7 @@ const useSupabaseRealtime = () => {
                                 title: payload.new.title,
                                 iconId: payload.new.icon_id,
                                 inTrash: payload.new.in_trash
+
                             }
                         }
                     })
@@ -148,8 +149,7 @@ const useSupabaseRealtime = () => {
                     
 
                 }
-
-                if (payload.eventType === 'DELETE'){
+                else if (payload.eventType === 'DELETE'){
 
                     const workspaceExists = state.workspaces.find(workspace => workspace.id === payload.old.id)
 
@@ -157,6 +157,23 @@ const useSupabaseRealtime = () => {
                         router.refresh()
                     }
 
+                }
+                else if (payload.eventType === 'UPDATE'){
+
+                    // router.refresh()
+
+                    dispatch({
+                        type: 'UPDATE_WORKSPACE',
+                        payload: {
+                            workspaceId: payload.new.id,
+                            workspace: {
+                                title: payload.new.title,
+                                logo: payload.new.logo,
+                                bannerUrl: payload.new.banner_url
+                            
+                            }
+                        }
+                    })
                 }
 
             }

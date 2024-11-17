@@ -331,6 +331,41 @@ export const deleteFile = async (folderId: string, fileId: string) => {
     }
 }
 
+export const getActiveProductsWithPrice = async () => {
+
+//this query here is the based on relational db concepts
+//the with syntax here of Drizzle is just like joins in sql relational dbs
+//this syntax abstracts away the join queries of sql
+//drizzle on its own in behind the scenes manages the related data (products and their respective prices)
+//we wont have to write a query like db.query.prices.findMany({where: (pri, {eq}), eq(prodcuts.id, pri.productId )})
+//For this abstraction to happen we have to specify two things..
+// 1. define primary and foreign keys b/w the related data
+// 2. setup relations b/w the related data
+// The relations for the prices and products can be seen in the lib/schema.ts file
+
+    try{
+        const data = await db.query.products.findMany({
+            where: (pro, {eq}) => eq(pro.active, true),
+
+            with: {
+                prices: {
+                    where: (pri, {eq}) => eq(pri.active, true)
+                }
+            }
+        })
+
+        if(data.length) return { data, error: null }
+
+        return { data: [], error: null }
+
+    }catch(err){
+        console.log('Error occured in getting Active products with prices')
+
+        return { data: [], error: 'Error occured in getting Active products with prices' }
+    }
+
+} 
+
 export const updateFolder = async (folderId: string, folder: Partial<folder>) => {
 
     try{

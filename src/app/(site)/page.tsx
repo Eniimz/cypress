@@ -3,6 +3,8 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import Banner from "../../../public/appBanner.png"
 import React from 'react'
 import Image from 'next/image';
+import SubscriptionModal from '@/components/global/SubscriptionModal';
+
 
 function page() {
   return (
@@ -54,6 +56,7 @@ function page() {
         </div>
 
       </div>
+
 
     </section>
   )

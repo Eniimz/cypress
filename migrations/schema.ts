@@ -1,5 +1,5 @@
 import { pgTable, foreignKey, pgEnum, uuid, text, boolean, bigint, integer, jsonb, timestamp } from "drizzle-orm/pg-core"
-  import { sql } from "drizzle-orm"
+  import { relations, sql } from "drizzle-orm"
 
 export const pricingPlanInterval = pgEnum("pricing_plan_interval", ['day', 'week', 'month', 'year'])
 export const pricingPlanIntervalNew = pgEnum("pricing_plan_interval_new", ['day', 'week', 'month', 'year'])
@@ -40,7 +40,7 @@ export const folders = pgTable("folders", {
 	bannerUrl: text("banner_url"),
 	workspaceId: uuid("workspace_id").references(() => workspaces.id, { onDelete: "cascade" } ),
 });
-	
+
 export const subscriptions = pgTable("subscriptions", {
 	id: text("id").primaryKey().notNull(),
 	userId: uuid("user_id").notNull().references(() => users.id),
@@ -58,6 +58,7 @@ export const subscriptions = pgTable("subscriptions", {
 	trialStart: timestamp("trial_start", { withTimezone: true, mode: 'string' }).default(sql`now()`),
 	trialEnd: timestamp("trial_end", { withTimezone: true, mode: 'string' }).default(sql`now()`),
 });
+
 
 export const users = pgTable("users", {
 	id: uuid("id").primaryKey().notNull(),
@@ -119,3 +120,14 @@ export const workspaces = pgTable("workspaces", {
 	logo: text("logo"),
 	bannerUrl: text("banner_url"),
 });
+
+export const productsRelations = relations(products, ({ many }) => ({
+    prices: many(prices)
+}))
+
+export const priceRelations = relations(prices, ({ one }) => ({
+    products: one(products, {
+        fields: [prices.productId],
+        references: [products.id]
+    })
+}))

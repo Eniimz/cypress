@@ -1,5 +1,3 @@
-
-
 import QuilEditor from '@/components/quil-editor/QuilEditor'
 
 type WorkspaceIdPageProps = {

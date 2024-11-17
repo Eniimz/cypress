@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toaster"
 import SupabaseUserProvider from "@/lib/providers/supabaseUserProvider";
 import AppStateProvider from "@/lib/providers/state-provider";
 import { SocketProvidor } from "@/lib/providers/socket-providor";
+import { SubscriptionModalProvider } from "@/lib/providers/subscription-modal-providor";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,7 +33,9 @@ export default function RootLayout({
           <AppStateProvider>
             <SupabaseUserProvider>
               <SocketProvidor>
-                {children}
+                
+                  {children}
+                
               </SocketProvidor>
             </SupabaseUserProvider>
           </AppStateProvider>

@@ -1,7 +1,7 @@
 import { date } from "drizzle-orm/mysql-core";
 import { boolean, integer, jsonb, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import { prices, subscriptionStatusNew, users } from "../../../migrations/schema";
-import { sql } from "drizzle-orm";
+import { prices, products, subscriptionStatusNew, users } from "../../../migrations/schema";
+import { relations, sql } from "drizzle-orm";
 
 export const workspaces = pgTable('workspaces', {
     id: uuid('id').defaultRandom().primaryKey().notNull(),
@@ -87,3 +87,15 @@ export const subscriptions = pgTable("subscriptions", {
 	trialStart: timestamp("trial_start", { withTimezone: true, mode: 'string' }).default(sql`now()`),
 	trialEnd: timestamp("trial_end", { withTimezone: true, mode: 'string' }).default(sql`now()`),
 });
+
+
+export const productsRelations = relations(products, ({ many }) => ({
+    prices: many(prices)
+}))
+
+export const priceRelations = relations(prices, ({ one }) => ({
+    products: one(products, {
+        fields: [prices.productId],
+        references: [products.id]
+    })
+}))

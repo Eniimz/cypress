@@ -34,7 +34,7 @@ const CollaboratorSearch: React.FC<CollaboratorSearchProps> = ({ children, exist
 
     const { user } = useSupabaseContext();
 
-    const addCollaborator = (user: user) => { //moving the collaborator to the parent
+    const   addCollaborator = (user: user) => { //moving the collaborator to the parent
         console.log("add button clicked")
         getCollaborator(user)
     }
