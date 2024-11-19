@@ -426,7 +426,7 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
         const { data, error } = await getWorkspace(workspaceId) 
         if(!data) return
 
-        quill.setContents(data[0] && data[0].data && JSON.parse(data[0].data))
+        quill.setContents((data[0] && data[0].data && JSON.parse(data[0].data)) || '')
 
         console.log("I the setContents ran..")
 
@@ -437,7 +437,8 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
         const { data, error }  = await getFolderDetails(workspaceId, folderId)
         if(!data) return
 
-        quill.setContents(JSON.parse(data[0].data || ''))
+        quill.setContents((data[0] && data[0].data && JSON.parse(data[0].data)) || '')
+        // quill.setContents(JSON.parse(data[0].data || ''))
 
 
       }
@@ -868,7 +869,7 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
             <BannerUpload
             dirType = {dirType}
             >
-              <p className='flex items-start text-muted-foreground text-sm'>
+              <p className='flex items-start text-muted-foreground text-sm cursor-pointer'>
                 {dirDetails?.bannerUrl ? 'Update Banner' : 'Upload Banner'}
               </p>
             </BannerUpload>
@@ -880,7 +881,7 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
                 gap-1
                 text-sm
                 text-muted-foreground
-                
+                cursor-pointer
                 '
                 onClick={removeBanner}  
                 >

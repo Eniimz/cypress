@@ -167,7 +167,7 @@ export const manageSubscriptionStatusChange = async (subscriptionId: string, sCu
             quantity: subscription.quantity,
             userId: uuid,
             metadata: subscription.metadata ?? null,
-            cancelAtPeriodEnd: subscription.cancel_at_period_end,
+            cancelAtPeriodEnd: false,   
             cancelAt: subscription.cancel_at
                     ? toDateTime(subscription.cancel_at).toISOString() 
                     : null,

@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 
-export const postData = async (url: string, data ?: price) => {
+export const postData = async (url: string, data ?: price | string) => {
 
   const result: Response = await fetch(url, {
     method: 'POST',

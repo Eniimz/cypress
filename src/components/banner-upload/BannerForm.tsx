@@ -84,9 +84,9 @@ const BannerForm: React.FC<BannerFormProps> = ({ dirType }) => {
 
         if(dirType === 'workspace'){
             
-            if(!folderId || !workspaceId) return
+            if(!workspaceId) return
             
-            uploadBanner()
+            await uploadBanner()
 
             dispatch({
                 type: 'UPDATE_WORKSPACE',
@@ -103,6 +103,7 @@ const BannerForm: React.FC<BannerFormProps> = ({ dirType }) => {
                     description: 'Banner updated successfully'
                 })
             }
+            console.log("The banner data: ", data)
 
         }
 
@@ -110,7 +111,7 @@ const BannerForm: React.FC<BannerFormProps> = ({ dirType }) => {
             
             if(!folderId || !workspaceId || !fileId) return
             
-            uploadBanner()
+            await uploadBanner()
 
             dispatch({
                 type: 'UPDATE_FILE',

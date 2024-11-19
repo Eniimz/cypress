@@ -42,8 +42,11 @@ export async function POST (request: Request){
                     case 'price.created':
                     case 'price.updated':
                         await upsertPriceRecord(event.data.object as Stripe.Price) 
+                    case 'customer.subscription.updated':
+                        const subscription = event.data.object as Stripe.Subscription
+                        await manageSubscriptionStatusChange(subscription.id, subscription.customer.toString(), false)
                     case 'checkout.session.completed':
-                        const checkoutSession = event.data.object as Stripe.Checkout.Session
+                        const checkoutSession = event.data.object as Stripe.Checkout.Session    
                         if(checkoutSession.mode === 'subscription'){
                             const subscriptionId = checkoutSession.subscription
                             await manageSubscriptionStatusChange(subscriptionId as string

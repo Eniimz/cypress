@@ -47,7 +47,7 @@ import clsx from 'clsx'
 import CollaboratorSearch from '../global/CollaboratorSearch'
 import { ScrollArea } from '../ui/scroll-area'
 import db from '@/lib/supabase/db'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import {
     AlertDialog,
     AlertDialogAction,
@@ -62,6 +62,7 @@ import {
 import { useSubscriptionModal } from '@/lib/providers/subscription-modal-providor'
 import { postData } from '@/lib/utils'
 import { getStripe } from '@/lib/stripe/stripeClient'
+import Stripe from 'stripe'
   
   
 type SettingsFormProps = {
@@ -262,11 +263,36 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
             // setPfpUploading(false)
             
         }
+        
+    }
+    
+    const onStartPlan = async () => {
+    
+        setOpen(true)
 
+        //make a post req to checkout-session-route
+        //why?
+        //to get a session id/url
+    }
+
+    const manageSubscription = async (customerId: string) => {
+     
+        try{
+            const result =  await postData('/api/create-portal', customerId)
+
+            if(!result) throw new Error()
+
+            window.location.assign(result.url)
+
+        }catch(err){
+            console.log(err)
+            throw new Error('An Error in fetching portal: ')
+        }
+        
     }
 
     useEffect(() => {
-
+        
         const showingWorkspace =  state.workspaces.find((workspace) => workspace.id === workspaceId)
 
         if(showingWorkspace) setWorkspaceDetails(showingWorkspace)
@@ -321,14 +347,6 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
 
     }, [])
 
-    const onStartPlan = async () => {
-    
-        setOpen(true)
-
-        //make a post req to checkout-session-route
-        //why?
-        //to get a session id/url
-    }
 
   return (
     <div className='flex flex-col gap-3'>
@@ -664,12 +682,20 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
                     </span>
                     
                     {
-                        subscription?.status !== 'active' && (
+                        subscription?.status !== 'active' ? (
 
                         <Button 
                         onClick={onStartPlan}
                         variant={'secondary'}>
                             Start Plan
+                        </Button>
+                        ) :
+                        (
+                        <Button
+                        onClick={() => manageSubscription(supabaseUser.id)}
+                        variant={'secondary'}
+                        >
+                            Manage subscription
                         </Button>
                         )
                     }

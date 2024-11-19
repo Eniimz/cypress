@@ -80,6 +80,7 @@ function SIGNUP_PAGE() {
       return;
     }
 
+    router.replace('/dashboard')
     setConfirmation(true)
 
   }
@@ -106,8 +107,8 @@ function SIGNUP_PAGE() {
         <FormDescription>All in one collaboration tool</FormDescription>
 
 
-  {
-    !confirmation && !codeExchangeError && (
+  {/* {
+    !confirmation && !codeExchangeError && ( */}
 
     <>
       <FormField
@@ -163,8 +164,7 @@ function SIGNUP_PAGE() {
       </Button>
 
     </>
-    )
-      }
+    
     <span className="flex gap-1">
         <p>Already have an account?</p>
 
@@ -174,7 +174,7 @@ function SIGNUP_PAGE() {
         </Link>
       </span>
 
-    {
+    {/* {
       (confirmation || codeExchangeError) && (
         <>
 
@@ -192,7 +192,7 @@ function SIGNUP_PAGE() {
 
         </>
       )
-    }
+    } */}
 
       </form>
     </Form>
