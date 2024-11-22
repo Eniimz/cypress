@@ -11,6 +11,7 @@ import { updateWorkspace } from '@/lib/supabase/queries'
 import { useRouter } from 'next/navigation'
 import { toast } from '../ui/use-toast'
 import { workspace } from '@/lib/supabase/supabase.types'
+import Trash from '../trash/Trash'
 
 type NativeNavigationProps = {
     myWorkspaceId: string
@@ -96,24 +97,27 @@ const NativeNavigation: React.FC<NativeNavigationProps> = ({
 
         </Settings>
 
-        <div 
-        className='
-        flex 
-        items-center 
-        gap-2
-        group/native 
-        cursor-pointer  
-        '>   
-            {/* inside the svg there is group-hover/native  */}
+        <Trash>
+            <div 
+            className='
+            flex 
+            items-center 
+            gap-2
+            group/native 
+            cursor-pointer  
+            '>   
+                {/* inside the svg there is group-hover/native  */}
 
-            <CypressTrashIcon /> 
+                <CypressTrashIcon /> 
 
-            <span 
-            // onClick={moveToTrash}
-            className='text-muted-foreground'>
-                Trash
-            </span>
-        </div>
+                <span 
+                // onClick={moveToTrash}
+                className='text-muted-foreground'>
+                    Trash
+                </span>
+            </div>
+        </Trash>
+        
 
         
     </nav>

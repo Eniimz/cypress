@@ -4,7 +4,7 @@ import { ScrollArea } from '../ui/scroll-area'
 
 type CustomDialogTriggerProps = {
     title: string,
-    description: string,
+    description?: string,
     children: React.ReactNode
     content: React.ReactNode
 }
@@ -15,23 +15,28 @@ const CustomDialogTrigger: React.FC<CustomDialogTriggerProps> = ({
   children, 
   content 
 }) => {
+
   return (
     <Dialog>
         <DialogTrigger className='w-full'> {children} </DialogTrigger>
         <DialogContent
         className='
         h-screen
-        sm:h-[440px]
+        sm:h-[440px] 
+        flex
+        flex-col       
         '
         >
-            <DialogHeader>
+            <DialogHeader className='' >
                 <DialogTitle> {title} </DialogTitle>
                 <DialogDescription> {description} </DialogDescription>
             </DialogHeader>
 
-            <ScrollArea>
+            <ScrollArea
+            className=''
+            >
 
-            {content}
+              {content}
 
             </ScrollArea>
 

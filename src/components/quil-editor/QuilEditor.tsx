@@ -702,6 +702,12 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
 
   }, [socket, localCursors])
   
+  useEffect(() => {
+
+    console.log("The state now: ", state)
+
+  }, [state])
+
   return (
     <div className='flex 
     flex-col 

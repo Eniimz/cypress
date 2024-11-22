@@ -10,6 +10,7 @@ import { useAppContext } from '@/lib/providers/state-provider'
 import NativeNavigation from './NativeNavigation'
 import FoldersDropDownList from './FoldersDropDownList'
 import { ScrollArea } from '../ui/scroll-area'
+import UserCard from './UserCard'
 
 type SidebarProps = {
     params: { workspaceId: string }
@@ -62,7 +63,7 @@ const Sidebar: React.FC<SidebarProps>= async ( { params } ) => {
       */}
 
   return (
-    <aside className='p-4 w-[330px] flex flex-col items-start gap-2'>
+    <aside className='p-4 w-[330px] flex flex-col items-start gap-2 justify-between'>
         
         <div className='flex flex-col gap-4 w-full'>
             <WorkspaceDropdown 
@@ -110,6 +111,8 @@ const Sidebar: React.FC<SidebarProps>= async ( { params } ) => {
             
 
         </div>
+
+        <UserCard subscription = {subscriptionData}/>
     </aside>
   )
 }

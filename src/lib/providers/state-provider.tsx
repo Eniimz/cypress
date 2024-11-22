@@ -8,7 +8,7 @@ import { getFiles } from "../supabase/queries"
 import { useSupabaseContext } from "./supabaseUserProvider"
 
 
-type appFoldersType = folder & { files : file[] | [] }
+export type appFoldersType = folder & { files : file[] | [] }
 
 type appWorkspacesType = workspace & { folders:  appFoldersType[] | [] }
 

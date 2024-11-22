@@ -300,8 +300,8 @@ const DropDown: React.FC<DropDownProps> = ({
         }
       })
 
-      const { data, error } = await updateFolder(fId[0], { inTrash: `Deletd by ${user.email}` })
-      const { data: fileData, error: fileError } = await updateFile(fId[0], { inTrash: `Deletd by ${user.email}`})
+      const { data, error } = await updateFolder(fId[0], { inTrash: `Deleted by ${user.email}` })
+      const { data: fileData, error: fileError } = await updateFile(fId[0], { inTrash: `Deleted by ${user.email}`})
 
       if(data){
         toast({
