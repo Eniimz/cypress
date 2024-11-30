@@ -140,7 +140,7 @@ import { useAppContext } from '@/lib/providers/state-provider';
 }
 
   return (
-    <Card className='w-[820px] h-auto border-muted-foreground'>
+    <Card className='w-[820px] h-screen sm:h-auto border-muted-foreground'>
         <CardHeader>
 
             <CardTitle className='text-2xl font-bold'>Create a Workspace</CardTitle>

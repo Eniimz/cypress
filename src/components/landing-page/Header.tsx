@@ -27,7 +27,7 @@ const Header = () => {
   const [path, setPath] = useState('#path')
 
   return (
-    <header className='p-4 flex items-center justify-between'>
+    <header className='p-2 sm:p-4 flex items-center justify-between'> 
         <Link
         href={'/'}
         className='flex items-center gap-2 ml-1'
@@ -38,7 +38,7 @@ const Header = () => {
             <span className='font-semibold text-lg'> cypress. </span>
         </Link>
 
-        <NavigationMenu className='ml-14'>
+        <NavigationMenu className='ml-14 hidden md:flex'>
           <NavigationMenuList className='flex gap-14 outline-none'>
             <NavigationMenuItem>
               <NavigationMenuTrigger 
@@ -136,7 +136,10 @@ const Header = () => {
 
           </Link>
 
-          <Button variant='btn-primary' className='px-5 py-6' onClick={() => router.replace('/signup')}>
+          <Button variant='btn-primary' 
+          className='px-3 py-4 sm:px-5 sm:py-6
+          ' 
+          onClick={() => router.replace('/signup')}>
             Sign Up
           </Button>
 

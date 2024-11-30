@@ -8,8 +8,8 @@ function HomePageLayout({
   children: React.ReactNode;
 }) {
   return (
-  <main >
-    <div>
+  <main className=''>
+    <div className=''>
       <Header />
       {children}
       </div>

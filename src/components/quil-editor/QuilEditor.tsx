@@ -709,10 +709,8 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
   }, [state])
 
   return (
-    <div className='flex 
-    flex-col 
-    items-center
-    
+    <div className='
+        
     '>
 
       { isConnected ? <div>Connected</div> : <div> Not connected </div>}
@@ -722,6 +720,8 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
           
           <div
           className='flex 
+          md:flex-row
+          flex-col
           w-full
           justify-center
           items-center
@@ -843,7 +843,7 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
         )
       }
 
-      <div className='max-w-[800px]'>
+      <div className='overflow-hidden max-w-[800px]'>
 
         <div className=' 
         flex
