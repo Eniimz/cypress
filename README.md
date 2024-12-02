@@ -4,14 +4,12 @@ A modern and intuitive collaboration platform designed to empower teams and indi
 
 ---
 
-## 🌟 Features
-
-### ✅ Core Features
+### Core Features
 - **Private and Shared Workspaces**: Organize your work privately or collaborate with your team in shared spaces.
 - **Folders and Files Management**: Easily manage and organize your data with hierarchical folders and files.
 - **Real-Time Collaboration**: Work together with your team, seeing changes reflected instantly.
 
-### 🎉 Subscription Plans
+### Subscription Plans
 - **Free Plan**:
   - Access to private and shared workspaces.
   - Limited features for basic collaboration.
@@ -22,7 +20,7 @@ A modern and intuitive collaboration platform designed to empower teams and indi
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - Next.js, TypeScript, Supabase, Sockets, Tailwind CSS, shadcn UI, Drizzle ORM, Stripe 
 
