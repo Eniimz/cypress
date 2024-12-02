@@ -124,7 +124,7 @@ const BannerForm: React.FC<BannerFormProps> = ({ dirType }) => {
                 }
             })
 
-            const { data, error } = await updateFile(folderId, { bannerUrl: filePath })
+            const { data, error } = await updateFile(folderId, fileId, { bannerUrl: filePath })
 
             if(data){
                 toast({
