@@ -22,12 +22,6 @@ A modern and intuitive collaboration platform designed to empower teams and indi
 
 ---
 
-## 📸 Screenshots
-
-*(Include screenshots of your app's interface, such as the dashboard, workspace view, folder structure, and real-time collaboration in action.)*
-
----
-
 ## 🛠️ Technologies Used
 
 - Next.js, TypeScript, Supabase, Sockets, Tailwind CSS, shadcn UI, Drizzle ORM, Stripe 
