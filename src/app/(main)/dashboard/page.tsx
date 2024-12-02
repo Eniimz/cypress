@@ -1,5 +1,6 @@
 import React from 'react'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import db from '@/lib/supabase/db';
 import DashboardSetup from '@/components/Dashboard/dashboard-setup';
@@ -9,7 +10,7 @@ import { redirect } from 'next/navigation';
 const dashboard = async () => {
 
     
-    const supabase = createServerComponentClient({ cookies })
+    const supabase = await createClient()
 
     const { data: { user } } = await supabase.auth.getUser()
 

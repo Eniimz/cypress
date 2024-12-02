@@ -4,12 +4,15 @@ import { Avatar, AvatarImage } from '../ui/avatar'
 import { AvatarFallback } from '@radix-ui/react-avatar'
 import { cn } from '@/lib/utils'
 import { features, title } from 'process'
+import { v4 } from 'uuid'
 import Image from 'next/image'
 import { Button } from '../ui/button'
 import diamond from '../../../public/icons/diamond.svg'
 import checkIcon from '../../../public/icons/check.svg'
 import { Span } from 'next/dist/trace'
 import PlanButton from './Go-to-plan-button'
+
+
 type CustomCardProps = {
     avatar?: string,
     name ?: string,
@@ -154,6 +157,7 @@ const CustomCard: React.FC<CustomCardProps> = ({
                         {
                             features?.map((feature) => (
                                 <div
+                                key={v4()}
                                 className='flex gap-3'
                                 >
                                     <Image src={checkIcon} alt='tick' />

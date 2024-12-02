@@ -4,7 +4,7 @@ import Image from 'next/image';
 import SubscriptionModal from '@/components/global/SubscriptionModal';
 import { CLIENTS, PRICING_CARDS, USERS } from '@/lib/constants';
 import TitleSection from '@/components/landing-page/TitleSection';
-
+import { v4 as randomUUID } from 'uuid'
 import Banner from "../../../public/appBanner.png"
 import Cal from '../../../public/cal.png'
 import CustomCard from '@/components/landing-page/Custom-card';
@@ -197,6 +197,7 @@ function page() {
           [...Array(2)].map((testimonial, index) => (
 
             <div 
+            key={randomUUID()}
             className={twMerge(
               clsx('mt-10 flex flex-nowrap gap-6 justify-center', {
                 'flex-row-reverse': index === 1,
@@ -245,6 +246,7 @@ function page() {
         {
           PRICING_CARDS.map((card) => (
             <CustomCard 
+            key={randomUUID()}
             planType={card.planType}
             price={card.price}
             description={card.description}

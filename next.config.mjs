@@ -2,7 +2,9 @@
 const nextConfig = {
     
     // reactStrictMode: false,
-
+    experimental: {
+        missingSuspenseWithCSRBailout: false,
+      },
     images: {
         domains: ['zasluhkbpogdfiznjijj.supabase.co']
     }

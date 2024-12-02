@@ -87,7 +87,6 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
 
     defaultPermission = defaultPermission ? 'shared' : 'private' 
 
-    if(!supabaseUser) return;
 
     
     const supabase = createClientComponentClient()
@@ -238,7 +237,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
 
         const profilePicture = e.target.files[0]
 
-        if(!profilePicture) return
+        if(!profilePicture || !supabaseUser) return
 
         const uuid = v4()
 
@@ -312,6 +311,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
 
         const fetchCurrentUser = async () => {
 
+            if(!supabaseUser) return
             const { data, error } = await getCurrentUser(supabaseUser.id)
             
             if(!data) return
@@ -703,7 +703,10 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
                         ) :
                         (
                         <Button
-                        onClick={() => manageSubscription(supabaseUser.id)}
+                        onClick={() => {
+                            if(!supabaseUser) return
+                            manageSubscription(supabaseUser.id)}
+                        }
                         variant={'secondary'}
                         >
                             Manage subscription

@@ -122,7 +122,7 @@ const WorkspaceDropdown: React.FC<WorkspaceDropdownProps> = (
                                     <p className='text-muted-foreground w-full text-sm p-2 pb-0.5 border-muted border-b-[1px]'>Private</p>
                                     {
                                         privateWorkspaces.map(workspace => (
-                                            <SelectedWorkspace workspace={workspace} handleClick={onClick}/>
+                                            <SelectedWorkspace key={workspace.id} workspace={workspace} handleClick={onClick}/>
                                         ))
 
                                     }
@@ -141,7 +141,7 @@ const WorkspaceDropdown: React.FC<WorkspaceDropdownProps> = (
 
                                     {
                                         sharedWorkspaces.map(workspace => (
-                                            <SelectedWorkspace workspace={workspace} handleClick={onClick}/>
+                                            <SelectedWorkspace key={workspace.id} workspace={workspace} handleClick={onClick}/>
                                         ))
 
                                     }
@@ -160,7 +160,7 @@ const WorkspaceDropdown: React.FC<WorkspaceDropdownProps> = (
 
                                     {
                                         collaboratedWorkspaces.map(workspace => (
-                                            <SelectedWorkspace workspace={workspace} handleClick={onClick}/>
+                                            <SelectedWorkspace key={workspace.id} workspace={workspace} handleClick={onClick}/>
                                         ))
 
                                     }

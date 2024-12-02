@@ -35,7 +35,7 @@ const TrashContent = () => {
         setFolders(folders)
         setFiles(allFiles)
 
-    }, [state.workspaces])
+    }, [state.workspaces, workspaceId])
 
   return (
 
@@ -73,6 +73,7 @@ const TrashContent = () => {
                         {
                             folders?.map((folder) => (
                                 <Link
+                                key={folder.id}
                                 href={`/dashboard/${folder.workspaceId}/${folder.id}`}
                                 className='hover:bg-muted p-1 rounded-lg'
                                 >
@@ -110,6 +111,7 @@ const TrashContent = () => {
                             {
                                 files?.map((file) => (
                                     <Link
+                                    key={file.id}
                                     href={`/dashboard/${file.workspaceId}/${file.folderId}/${file.id}`}
                                     className='hover:bg-muted p-1 rounded-lg'
                                     >

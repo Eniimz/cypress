@@ -53,6 +53,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ children }) => {
           {
             nativeNavigation.map((menu) => (
               <li
+              key={menu.id}
               className='flex
               flex-col
               items-center

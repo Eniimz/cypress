@@ -184,7 +184,7 @@ const useSupabaseRealtime = () => {
             channel.unsubscribe()
         }
 
-    }, [supabase, state])    
+    }, [supabase, state, dispatch, router])     //dispatch & router cuz the build said
 
   
     return null

@@ -441,28 +441,30 @@ export const AppStateProvider: React.FC<AppStateProviderProps> = ({ children }) 
 
     const [ state, dispatch ] = useReducer(appReducer, initialState)
     const pathname = usePathname()
-    if(!pathname) return
+    
     const workspaceId = useMemo(() => {
-        const urlSegments = pathname.split('/').filter(Boolean)
-        if(urlSegments.length > 1){ // '/dashboard/workspaceId'
+        const urlSegments = pathname?.split('/').filter(Boolean)
+        if(urlSegments && urlSegments.length > 1){ // '/dashboard/workspaceId'
             return urlSegments[1]
         }
+        return undefined
     }, [pathname])
 
     const folderId = useMemo(() => {
-        const urlSegments = pathname.split('/').filter(Boolean)
-        if(urlSegments.length > 2){ // '/dashboard/workspaceId/folderId'
+        const urlSegments = pathname?.split('/').filter(Boolean)
+        if(urlSegments && urlSegments.length > 2){ // '/dashboard/workspaceId/folderId'
             return urlSegments[2]
         }
+        return undefined
     }, [pathname])
 
     const fileId = useMemo(() => {
-        const urlSegments = pathname.split('/').filter(Boolean)
+        const urlSegments = pathname?.split('/').filter(Boolean)
 
-        if(urlSegments.length > 3){ // '/dashboard/workspaceId/folderId/fileId'
+        if(urlSegments && urlSegments.length > 3){ // '/dashboard/workspaceId/folderId/fileId'
             return urlSegments[3]
         }
-
+        return undefined
     }, [pathname])
 
     useEffect(() => {
