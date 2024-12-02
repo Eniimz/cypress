@@ -452,7 +452,7 @@ export const getFiles = async (workspaceId: string, folderId: string) => {
 
 export const updateFile = async (
     folderId: string, 
-    // fileId: string,
+    fileId: string,
     file: Partial<file>
 ) => {
 
@@ -460,7 +460,11 @@ export const updateFile = async (
 
         const result = await db.update(files).set(file)
         .where(
-            eq(files.folderId, folderId)
+            and(
+                eq(files.folderId, folderId),
+                eq(files.id, fileId)
+            )
+            
         )
 
         return { data: result, error: null }
