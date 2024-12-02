@@ -160,7 +160,7 @@ function SIGNUP_PAGE() {
       {/* { submitError && <FormMessage> {submitError} </FormMessage> } */}
 
       <Button type="submit" disabled={isLoading} className='w-full'>
-        { isLoading ? <Loader /> : 'Create Account}'}
+        { isLoading ? <Loader /> : 'Create Account'}
       </Button>
 
     </>

@@ -40,7 +40,7 @@ function TitleSection({ title, description, pill }: TitleSectionProps) {
             className='
             dark:text-washed-purple-700 
             text-center
-            sm:w-[40%]
+            sm:w-[45%]
             
             '
             >

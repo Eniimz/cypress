@@ -36,7 +36,7 @@ const UserCard: React.FC<UserCardProps> = async ({ subscription }) => {
     sm:flex 
     items-center 
     dark:bg-Neutrals/neutrals-12 
-    p-2 
+    p-1
     gap-2 rounded-3xl'>
         <div className=''>
             <Avatar className='flex items-center justify-center'>
@@ -54,18 +54,16 @@ const UserCard: React.FC<UserCardProps> = async ({ subscription }) => {
                 </p>
                 <small className='w-[100px]'>
                     {user?.email && user.email.length > 18 ? user.email.substring(0, 11) + '...' : user?.email }
-                    </small>
+                </small>
             </div>
 
-            <div className='flex justify-center items-center gap-1  '>
 
-                <LogOut>
-                    <LogOutIcon size={33}/>
-                </LogOut>    
+            <LogOut classname='px-1 mr-2 mb-3'>
+                <LogOutIcon size={33}/>
+            </LogOut>    
 
-                <ModeToggle />
+            <ModeToggle/>
 
-            </div>
         </div>
     </div>
   )

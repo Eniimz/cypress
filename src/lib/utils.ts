@@ -2,9 +2,9 @@ import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { price } from "./supabase/supabase.types"
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
+  export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs))
+  }
 
 
 export const postData = async (url: string, data ?: price | string) => {

@@ -6,12 +6,14 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { Button } from '../ui/button'
+import clsx from 'clsx'
 
 type LogOutProps = {
     children: React.ReactNode
+    classname ?: string
 }
 
-const LogOut: React.FC<LogOutProps> = ({ children }) => {
+const LogOut: React.FC<LogOutProps> = ({ children, classname }) => {
     
     const supabase = createClientComponentClient()
     const { user, subscription } = useSupabaseContext()
@@ -34,9 +36,9 @@ const LogOut: React.FC<LogOutProps> = ({ children }) => {
 
   return (
     <Button
-    size={'icon'}
+    size={'lg' }
     variant={'ghost'}
-    className='p-0'
+    className={clsx('p-1', classname)}
     onClick={onLogOut}
     >
         {children}

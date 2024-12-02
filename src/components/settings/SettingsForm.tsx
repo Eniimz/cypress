@@ -6,7 +6,8 @@ import {
     CreditCard,
     ExternalLink,
     Lock,
-    LogOut,
+    LogOutIcon,
+    LucideLogOut,
     PlusIcon,
     Scroll,
     Share,
@@ -43,6 +44,7 @@ import { toast } from '../ui/use-toast'
 import { eventNames } from 'process'
 import { user, workspace } from '@/lib/supabase/supabase.types'
 import Loader from '../global/Loader'
+import LogOut from '../global/LogOut'
 import clsx from 'clsx'
 import CollaboratorSearch from '../global/CollaboratorSearch'
 import { ScrollArea } from '../ui/scroll-area'
@@ -140,6 +142,12 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
     const addCollaborator = async (user: user) => {
 
         if(!workspaceId) return
+
+        if(subscription?.status !== 'active' && collaborators.length >= 3){
+            setOpen(true)
+            return
+        }
+
 
         setCollaborators([...collaborators, user])
 
@@ -646,7 +654,10 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
                 </div>
 
                     <div className='pl-1'>
-                        <LogOut/>
+                        <LogOut classname=''>
+                            <LucideLogOut className=''/><span className='text-muted-foreground'>Logout</span>
+                        </LogOut>
+
                     </div>
             </div>
 

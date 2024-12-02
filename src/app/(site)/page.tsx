@@ -1,12 +1,15 @@
 import { Button, buttonVariants } from '@/components/ui/button';
-import React from 'react'
+import React, { use } from 'react'
 import Image from 'next/image';
 import SubscriptionModal from '@/components/global/SubscriptionModal';
-import { CLIENTS } from '@/lib/constants';
+import { CLIENTS, PRICING_CARDS, USERS } from '@/lib/constants';
 import TitleSection from '@/components/landing-page/TitleSection';
 
 import Banner from "../../../public/appBanner.png"
 import Cal from '../../../public/cal.png'
+import CustomCard from '@/components/landing-page/Custom-card';
+import { twMerge } from 'tailwind-merge';
+import clsx from 'clsx';
 
 function page() {
   return (
@@ -128,10 +131,11 @@ function page() {
         className='relative
         border-8 
         mt-8
+        mb-10
         rounded-3xl 
         border-washed-purple-700
         border-opacity-10
-        max-w-[450px]
+        max-w-[450px] 
         flex
         items-center
         justify-center
@@ -154,7 +158,106 @@ function page() {
           />
           
             
-      </div>      
+      </div>  
+
+      <div className='mt-10'></div>    
+
+      <TitleSection 
+      pill='Testimonials'
+      title='Trusted by all'
+      description='Join thousands of satisfied users who rely on our platform
+      for their personal and professional productivity needs'
+      />    
+
+      <div
+      className='relative
+      mt-1x0
+      flex flex-col
+      px-6
+      gap-10
+      w-[200%]
+      '
+      >
+        <div
+        className='
+        absolute
+        bottom-[50%]
+        top-0
+        left-0
+        right-0
+        bg-brand-primaryPurple/20
+        -z-100
+        rounded-full
+        blur-[120px]
+        
+        '
+        
+        />
+        {
+          [...Array(2)].map((testimonial, index) => (
+
+            <div 
+            className={twMerge(
+              clsx('mt-10 flex flex-nowrap gap-6 justify-center', {
+                'flex-row-reverse': index === 1,
+                'animate-[slide_17s_linear_infinite] sm:animate-[slide_250s_linear_infinite]': true,
+                'animate-[slide_17s_linear_infinite_reverse] sm:animate-[slide_250s_linear_infinite_reverse]': index === 1,
+              }),
+              'hover:paused'
+            )}
+            >
+
+               {
+                USERS.map((user, i) => (
+                  <CustomCard 
+                  avatar={`/avatars/${i + 1}.png`}
+                  name={user.name}
+                  review={user.message}
+                  classname='w-[300px]  sm:w-[500px] sm:h-[230px] bg-gradient-to-t
+                  dark:from-border
+                  dark:to-background shrink-0
+                  '
+                  key={user.name} 
+                  />
+                ))
+               } 
+              
+            </div>  
+
+          ) )
+
+        }
+      </div>
+
+      <section className='mt-20 flex flex-col gap-10'>
+        <TitleSection 
+        pill='Pricing'
+        title='The Perfect Plan For You'
+        description='Experience all the benefits of our platform. 
+        Select a plan that suits for needs and take your productivity to 
+        new heights'
+
+        />
+
+        <div
+        className='flex flex-col sm:flex-row gap-5 justify-center items-center'
+        >
+        {
+          PRICING_CARDS.map((card) => (
+            <CustomCard 
+            planType={card.planType}
+            price={card.price}
+            description={card.description}
+            highlightFeature={card.highlightFeature}
+            features={card.freatures}
+            classname={clsx('w-[320px] h-[520px] background-blur-3xl dark:bg-black/40 relative')}
+            />
+          ))
+        }
+
+        </div>
+
+      </section>
 
     </section>
   )

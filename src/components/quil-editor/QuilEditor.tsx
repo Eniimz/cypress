@@ -709,9 +709,7 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
   }, [state])
 
   return (
-    <div className='
-        
-    '>
+    <div className='flex flex-col justify-center items-center'>
 
       { isConnected ? <div>Connected</div> : <div> Not connected </div>}
 
@@ -759,8 +757,10 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
 
       <div className='
       p-2 w-full flex gap-2 
+      flex-col
+      sm:flex-row
       text-lg 
-      items-center
+      sm:items-center
       justify-between
       '
       >
@@ -768,7 +768,7 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
           {breadCrumb} 
         </div>
 
-        <div className='flex items-center gap-5'>
+        <div className='flex items-center gap-5 justify-end sm:justify-normal'>
 
           <div className='flex items-center'>
             {

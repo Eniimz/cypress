@@ -14,13 +14,13 @@ const ModeToggle = () => {
     size={'icon'}
     variant={'outline'}
     onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-    className=''
+    className='p-0.5 mb-3 mr-1'
     >
 
         <Sun 
         className='
-        h-[1.2rem]
-        w-[1.2rem]
+        h-[1rem]
+        w-[1rem]
         scale-100
         dark:scale-0
         '
@@ -37,8 +37,8 @@ const ModeToggle = () => {
 
         <Moon 
         className='
-        h-[1.2rem]
-        w-[1.2rem]
+        h-[1rem]
+        w-[1rem]
         absolute
         scale-0
         rotate-90  

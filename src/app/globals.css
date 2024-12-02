@@ -79,6 +79,14 @@ html, body{
   animation: 15s slide linear infinite;
 }
 
+.animate-slide-testimonial {
+  animation: 15s slide linear infinite;
+}
+
+.animate-slide-testimonial-reverse {
+  animation: 15s slide linear infinite reverse; 
+}
+
 @keyframes slide {
   from {
     transform: translateX(0);

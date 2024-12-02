@@ -187,7 +187,7 @@ import { useAppContext } from '@/lib/providers/state-provider';
                         </Label>
                         <Input type='file' 
                         accept='image/*'
-                        className='flex items-center cursor-pointer' 
+                        className='flex items-center cursor-pointer py-2' 
                         {...register("logo", {
                             required: false
                         })}/>

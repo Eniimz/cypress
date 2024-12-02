@@ -63,7 +63,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ children }) => {
                 <menu.customIcon></menu.customIcon>
 
                 <small
-                className='text-muted-foreground'
+                className='dark:text-white'
                 >
                   {menu.title}
                 </small>

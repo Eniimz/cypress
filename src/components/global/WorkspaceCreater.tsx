@@ -21,6 +21,7 @@ import { v4 } from 'uuid'
 import { useSupabaseContext } from '@/lib/providers/supabaseUserProvider'
 import { addCollaborators, createWorkspace } from '@/lib/supabase/queries'
 import { useRouter } from 'next/navigation'
+import { useSubscriptionModal } from '@/lib/providers/subscription-modal-providor'
 
 
 
@@ -32,7 +33,8 @@ const WorkspaceCreater = () => {
   const [permissions, setPermissions] = useState('private')
   const [collaborators, setCollaborators] = useState<user[] | []>([])
 
-  const { user } = useSupabaseContext();
+  const { user, subscription } = useSupabaseContext();
+  const { open, setOpen } = useSubscriptionModal()
 
   const removeCollaborator = (collaborator: user) => {
     setCollaborators((prevCollaborators) => 
@@ -88,6 +90,19 @@ const WorkspaceCreater = () => {
   }
 
   }
+
+  const addOneCollaborator = (user: user) => {
+
+    if(subscription?.status !== 'active' && collaborators.length >= 3){
+      setOpen(true)
+      return
+    }
+
+    setCollaborators([...collaborators, user])
+
+  }
+
+  
 
   return (
     <div className='flex flex-col gap-4'>
@@ -165,7 +180,7 @@ const WorkspaceCreater = () => {
             permissions === 'shared' && 
             <CollaboratorSearch
             existingCollaborators = {collaborators}
-            getCollaborator = { (user) => setCollaborators([...collaborators, user]) }
+            getCollaborator = { (user) => addOneCollaborator(user) }
             >
               <div className='flex justify-center'>    
                 <Button>
