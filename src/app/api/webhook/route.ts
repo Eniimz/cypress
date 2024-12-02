@@ -2,6 +2,8 @@ import { stripe } from "@/lib/stripe"
 import { manageSubscriptionStatusChange, upsertPriceRecord, upsertProductRecord } from "@/lib/stripe/adminTasks";
 import Stripe from "stripe";
 
+console.log("The strip is initilizzed?: ", stripe)
+
 export async function POST (request: Request){
 
     const relevantEvents = new Set([
