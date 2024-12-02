@@ -18,7 +18,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod'
 import { workspaceFormSchema } from '@/lib/types';
 import { subscription } from '@/lib/supabase/supabase.types';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+// import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@/lib/supabase/client';
 import { v4 as uuidv4 } from 'uuid';
 import { workspace } from '@/lib/supabase/supabase.types';
 import { createWorkspace } from '@/lib/supabase/queries';
@@ -34,7 +35,7 @@ import { useAppContext } from '@/lib/providers/state-provider';
     }
 
     
-    const supabase = createClientComponentClient();
+    const supabase = createClient();
     
     const DashboardSetup: React.FC<DashboardSetupProps> = ({ user, subscription }) => {
         

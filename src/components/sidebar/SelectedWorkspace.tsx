@@ -1,7 +1,8 @@
 'use client'
 
 import { workspace } from '@/lib/supabase/supabase.types'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+// import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@/lib/supabase/client'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
@@ -13,7 +14,7 @@ type SelectedWorkspaceProps = {
 
 const SelectedWorkspace: React.FC<SelectedWorkspaceProps> = ({ workspace, handleClick }) => {
 
-    const supabase = createClientComponentClient()
+    const supabase = createClient()
 
     const [worskspaceLogo, setWorkspaceLogo] = useState('/cypresslogo.svg')
 

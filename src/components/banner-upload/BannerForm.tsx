@@ -9,7 +9,8 @@ import { z } from 'zod'
 import { bannerSchema } from '@/lib/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAppContext } from '@/lib/providers/state-provider'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+// import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@/lib/supabase/client'
 import { v4 } from 'uuid'
 import { updateFile, updateFolder, updateWorkspace } from '@/lib/supabase/queries'
 import { toast } from '../ui/use-toast'
@@ -22,7 +23,7 @@ type BannerFormProps = {
 const BannerForm: React.FC<BannerFormProps> = ({ dirType }) => {
 
     const { state, dispatch, folderId, workspaceId, fileId } = useAppContext()
-    const supabase = createClientComponentClient()
+    const supabase = createClient()
 
     const {
         handleSubmit, 

@@ -2,7 +2,8 @@
 
 import { useAppContext } from '@/lib/providers/state-provider'
 import { useSupabaseContext } from '@/lib/providers/supabaseUserProvider'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+// import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { Button } from '../ui/button'
@@ -15,7 +16,7 @@ type LogOutProps = {
 
 const LogOut: React.FC<LogOutProps> = ({ children, classname }) => {
     
-    const supabase = createClientComponentClient()
+    const supabase = createClient()
     const { user, subscription } = useSupabaseContext()
 
     const { state } = useAppContext()

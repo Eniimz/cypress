@@ -1,7 +1,8 @@
 'use server'
 
 import { z } from 'zod';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+// import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from "../supabase/server";
 import { FormSchema } from '../types';
 import { cookies } from 'next/headers';
 import { error } from 'console';
@@ -11,7 +12,7 @@ export async function actionLoginUser({
     password    
 }: z.infer<typeof FormSchema>) {
  
-    const supabase = createRouteHandlerClient({ cookies });
+    const supabase = await createClient();
 
     const response = await supabase.auth.signInWithPassword({
         email, 
@@ -30,7 +31,7 @@ export async function actionSignUpUser({
     password
 }: z.infer<typeof FormSchema>) {
 
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabase = await createClient()
 
     const { data } = await supabase.from('profiles').select('*').eq('email', email)
 

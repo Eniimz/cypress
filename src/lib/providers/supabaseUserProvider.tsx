@@ -3,7 +3,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { subscription, user } from "../supabase/supabase.types";
 import { AuthUser } from "@supabase/supabase-js";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+// import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "../supabase/client";
 import { getUserSubscriptionStatus } from "../supabase/queries";
 import { toast } from "@/components/ui/use-toast";
 import { usePathname } from "next/navigation";
@@ -36,7 +37,7 @@ type supabaseUserProviderProps = {
 
 const SupabaseUserProvider: React.FC<supabaseUserProviderProps> = ({ children }) => {
 
-    const supabase = createClientComponentClient();
+    const supabase = createClient()
 
     const [user, setUser] = useState<AuthUser | null>(null);
     const [subscription, setSubscription] = useState<subscription | null>()

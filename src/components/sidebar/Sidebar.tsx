@@ -1,5 +1,6 @@
 import { getCollaboratedWorkspaces, getFiles, getFolders, getPrivateWorkspaces, getSharedWorkspaces, getUserSubscriptionStatus } from '@/lib/supabase/queries'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+// import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@/lib/supabase/server'
 import React, { useEffect } from 'react'
 import { cookies } from 'next/headers'
 import SelectedWorkspace from './SelectedWorkspace'
@@ -20,7 +21,7 @@ type SidebarProps = {
 
 const Sidebar: React.FC<SidebarProps>= async ( { params, classname } ) => {
 
-      const supabase = createServerComponentClient({ cookies })
+      const supabase = await createClient()
 
       const { data: { user } } = await supabase.auth.getUser();
 

@@ -3,7 +3,8 @@
 import { stripe } from "@/lib/stripe"
 import { createOrRetrieveCustomer } from "@/lib/stripe/adminTasks"
 import { getUrl } from "@/lib/utils"
-import { createClientComponentClient, createRouteHandlerClient } from "@supabase/auth-helpers-nextjs"
+// import { createClientComponentClient, createRouteHandlerClient } from "@supabase/auth-helpers-nextjs"
+import { createClient } from "@/lib/supabase/server"
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
@@ -17,7 +18,7 @@ export async function POST(request: Request){
     console.log('price : ', data )
 
     try{
-        const supabase = createRouteHandlerClient({ cookies })
+        const supabase = await createClient()
 
         const {
             data: { user }

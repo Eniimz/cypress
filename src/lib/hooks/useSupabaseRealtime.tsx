@@ -1,4 +1,5 @@
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+// import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '../supabase/client'
 import React, { useEffect } from 'react'
 import { useAppContext } from '../providers/state-provider'
 import { useRouter } from 'next/navigation'
@@ -6,7 +7,7 @@ import { file, workspace } from '../supabase/supabase.types'
 
 const useSupabaseRealtime = () => {
   
-    const supabase = createClientComponentClient()
+    const supabase = createClient()
 
     const { dispatch, state } = useAppContext()
 

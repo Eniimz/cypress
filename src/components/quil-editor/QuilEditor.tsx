@@ -13,7 +13,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import EmojiPicker from '../global/EmojiPicker';
 import BannerUpload from '../banner-upload/BannerUpload';
 import Image from 'next/image';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+// import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@/lib/supabase/client';
 import { XCircleIcon } from 'lucide-react';
 import { useSocket } from '@/lib/providers/socket-providor';
 import { Scope_One } from 'next/font/google';
@@ -59,7 +60,7 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
 
   const router = useRouter()
   const pathname = usePathname()
-  const supabase = createClientComponentClient()
+  const supabase = createClient()
 
   const { state, dispatch, workspaceId, folderId } = useAppContext()
   const { user } = useSupabaseContext()

@@ -9,7 +9,8 @@ import { useAppContext } from '@/lib/providers/state-provider'
 import CypressProfileIcon from '../icons/cypressProfileIcon'
 import { subscription } from '@/lib/supabase/supabase.types'
 import React from 'react'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+// import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@/lib/supabase/server'
 import { cookies } from 'next/headers'
 import LogOut from '../global/LogOut'
 import db from '@/lib/supabase/db'
@@ -21,7 +22,7 @@ type UserCardProps = {
 
 const UserCard: React.FC<UserCardProps> = async ({ subscription }) => {
 
-    const supabase = createServerComponentClient({ cookies })
+    const supabase = await createClient()
 
     const { data: { user } } = await supabase.auth.getUser()
 

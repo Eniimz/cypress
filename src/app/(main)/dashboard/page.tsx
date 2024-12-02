@@ -1,5 +1,5 @@
 import React from 'react'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+// import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 import db from '@/lib/supabase/db';

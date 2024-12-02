@@ -38,7 +38,8 @@ import { Avatar, AvatarImage } from '../ui/avatar'
 import { AvatarFallback } from '@radix-ui/react-avatar'
 import { useAppContext } from '@/lib/providers/state-provider'
 import { addCollaborators, getCollaborators, getCollaboratorsAsUsers, getCurrentUser, getWorkspace, removeCollaborators, removeWorkspace, updateUser, updateWorkspace } from '@/lib/supabase/queries'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+// import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@/lib/supabase/client'
 import { v4 } from 'uuid'
 import { toast } from '../ui/use-toast'
 import { eventNames } from 'process'
@@ -89,7 +90,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
 
 
     
-    const supabase = createClientComponentClient()
+    const supabase = createClient()
     
     const titleTimerRef = useRef<ReturnType<typeof setTimeout>>()
     const [pfpUploading, setPfpUploading] = useState(false)
