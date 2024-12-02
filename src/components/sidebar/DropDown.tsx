@@ -109,7 +109,7 @@ const DropDown: React.FC<DropDownProps> = ({
   
       //the reason we dont pass { iconId } in the second parameter is as we are using the var and updating the db with 
       //it immediately after the dispatch, as dispatch is asynchronus we cant use the updated state immediately after as its not updated yet, can be checked by loggin iconId value
-      const { data, error } = await updateFile( fId[0], { iconId: emoji } ) 
+      const { data, error } = await updateFile( fId[0],fId[1], { iconId: emoji } ) 
   
       if(error){
         toast({
@@ -166,7 +166,7 @@ const DropDown: React.FC<DropDownProps> = ({
 
     if(listType === 'file'){
     
-      const { data, error } = await updateFile(fId[0], { title })
+      const { data, error } = await updateFile(fId[0], fId[1], { title })
       
       if(data){
         toast({
@@ -301,7 +301,7 @@ const DropDown: React.FC<DropDownProps> = ({
       })
 
       const { data, error } = await updateFolder(fId[0], { inTrash: `Deleted by ${user.email}` })
-      const { data: fileData, error: fileError } = await updateFile(fId[0], { inTrash: `Deleted by ${user.email}`})
+      const { data: fileData, error: fileError } = await updateFile(fId[0], fId[1], { inTrash: `Deleted by ${user.email}`})
 
       if(data){
         toast({
@@ -319,7 +319,7 @@ const DropDown: React.FC<DropDownProps> = ({
       
     }
 
-    if(listType == 'file'){
+    if(listType == 'file'){ 
 
       dispatch({
         type: 'UPDATE_FILE',
@@ -331,7 +331,7 @@ const DropDown: React.FC<DropDownProps> = ({
         }
       })
 
-      const { data, error } = await updateFile(fId[0], { inTrash: `Deletd by ${user.email}` })
+      const { data, error } = await updateFile(fId[0], fId[1], { inTrash: `Deletd by ${user.email}` })
 
       if(data){
         toast({
