@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🛠️ Collaborative Workspace Tool
 
-## Getting Started
+A modern and intuitive collaboration platform designed to empower teams and individuals to work together seamlessly in **real-time**. This tool offers private and shared workspaces, file and folder management, and real-time editing features to streamline productivity.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Core Features
+- **Private and Shared Workspaces**: Organize your work privately or collaborate with your team in shared spaces.
+- **Folders and Files Management**: Easily manage and organize your data with hierarchical folders and files.
+- **Real-Time Collaboration**: Work together with your team, seeing changes reflected instantly.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Subscription Plans
+- **Free Plan**:
+  - Access to private and shared workspaces.
+  - Limited features for basic collaboration.
+- **Pro Plan** (Paid):
+  - Advanced collaboration features.
+  - Access to exclusive productivity tools and enhanced performance.
+  - **Secure Payment Integration with Stripe**: Hassle-free, secure, and reliable payment processing for Pro plan subscriptions.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Technologies Used
 
-## Learn More
+- Next.js, TypeScript, Supabase, Sockets, Tailwind CSS, shadcn UI, Drizzle ORM, Stripe 
 
-To learn more about Next.js, take a look at the following resources:
+ 
+### Run it locally
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Eniimz/cypress-a-collaboration-tool.git
+   cd cypress-a-collaboration-tool
+   ### Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+2. Install dependencies:
+   ```bash
+   npm install
+3. A .env file
+  ```bash
+  NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+  NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_key
+  STRIPE_SECRET_KEY=your_stripe_secret_key
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+  ```
+4. ```bash
+   npm run dev
+   ```
