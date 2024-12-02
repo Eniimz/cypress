@@ -450,6 +450,27 @@ export const getFiles = async (workspaceId: string, folderId: string) => {
 
 }
 
+export const updateFiles = async (
+    folderId: string,
+    file: Partial<file>
+) => {
+    
+try{
+
+    const result = await db.update(files).set(file)
+    .where(
+        eq(files.folderId, folderId)
+    )
+
+    return { data: result, error: null }
+    
+}catch(err){
+
+    return { data: null, error: 'Error in restoring files of the folder' }
+
+}
+}
+
 export const updateFile = async (
     folderId: string, 
     fileId: string,

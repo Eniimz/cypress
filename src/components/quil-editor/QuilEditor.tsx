@@ -5,7 +5,7 @@ import 'quill/dist/quill.snow.css'
 import { Button } from '../ui/button';
 import { useAppContext } from '@/lib/providers/state-provider';
 import { useSupabaseContext } from '@/lib/providers/supabaseUserProvider';
-import { deleteFile, findUser, getCollaborators, getFolderDetails, getWorkspace, removeFolder, removeWorkspace, updateFile, updateFolder, updateWorkspace } from '@/lib/supabase/queries';
+import { deleteFile, findUser, getCollaborators, getFolderDetails, getWorkspace, removeFolder, removeWorkspace, updateFile, updateFiles, updateFolder, updateWorkspace } from '@/lib/supabase/queries';
 import { toast } from '../ui/use-toast';
 import { usePathname, useRouter } from 'next/navigation';
 import { Badge } from "@/components/ui/badge"
@@ -176,7 +176,7 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
       })
 
       const { data, error } = await updateFolder(folderId, { inTrash: '' })
-      const { data: fileData, error: fileError } = await updateFile(folderId, { inTrash: '' })
+      const { data: fileData,  error: fileError } = await updateFiles(folderId,  { inTrash: '' })
 
       if(error){
         toast({
@@ -206,7 +206,7 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
         }
       })
   
-      const { data, error } = await updateFile(folderId, { inTrash: '' })
+      const { data, error } = await updateFile(folderId, fileId, { inTrash: '' })
       
       if(data){
         toast({
@@ -532,7 +532,7 @@ const QuilEditor: React.FC<QuilEditorProps> = ({ dirType, fileId }) => {
             }
            })
 
-           await updateFile(fileId, { data: JSON.stringify(content) })
+           await updateFile(folderId, fileId, { data: JSON.stringify(content) })
 
         }
 
