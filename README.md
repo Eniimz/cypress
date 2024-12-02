@@ -29,8 +29,8 @@ A modern and intuitive collaboration platform designed to empower teams and indi
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/collaborative-tool.git
-   cd collaborative-tool
+   git clone https://github.com/Eniimz/cypress-a-collaboration-tool.git
+   cd cypress-a-collaboration-tool
    ### Installation
 
 2. Install dependencies:
