@@ -50,7 +50,7 @@ function page() {
             
           "
           >
-            Get Notion For Free
+            Get Cypress For Free
           </Button>
         </div>
 
