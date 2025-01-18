@@ -29,12 +29,11 @@ export const SocketProvidor: React.FC<SocketProvidorProps> = ({ children }) => {
     const [isConnected, setIsConnected] = useState(false)
 
     useEffect(() => {
-        const backendUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://cypress-a-collaboration-tool-production.up.railway.app"
+        const backendUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
     
         const socketInstance = new (ClientIo as any)(
-            "https://cypress-a-collaboration-tool-production.up.railway.app"
-            , {
-            path: '/api/socket/io',  // Ensure this matches your backend
+            backendUrl,{
+            path: '/api/socket/io',  
             withCredentials: true,
             addTrailingSlash: false
         });
