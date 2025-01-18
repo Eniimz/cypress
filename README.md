@@ -20,6 +20,8 @@ A modern and intuitive collaboration platform designed to empower teams and indi
 
 ---
 
+![Screenshot](public/cypresLandingPage.png)
+
 ## Technologies Used
 
 - Next.js, TypeScript, Supabase, Sockets, Tailwind CSS, shadcn UI, Drizzle ORM, Stripe 
