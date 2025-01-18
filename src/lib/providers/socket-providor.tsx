@@ -32,7 +32,8 @@ export const SocketProvidor: React.FC<SocketProvidorProps> = ({ children }) => {
         const backendUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://cypress-a-collaboration-tool-production.up.railway.app"
     
         const socketInstance = new (ClientIo as any)(
-            backendUrl, {
+            "https://cypress-a-collaboration-tool-production.up.railway.app"
+            , {
             path: '/api/socket/io',  // Ensure this matches your backend
             withCredentials: true,
             addTrailingSlash: false
